@@ -10,7 +10,7 @@ void main(){
     //act
     final String result = EmailValidator.validate(email);
     //assert
-    expect(result, EmailValidator.EMAIL_CANT_BE_EMPTY);
+    expect(result, EmailValidator.emailCantBeEmpty);
   },);
 
   test('EmailValidator should return message that email is invalid format', (){
@@ -19,7 +19,7 @@ void main(){
     //act
     final String result = EmailValidator.validate(email);
     //assert
-    expect(result, EmailValidator.EMAIL_INVALID_FORMAT);
+    expect(result, EmailValidator.emailInvalidFormat);
 
   },);
 
@@ -29,7 +29,7 @@ void main(){
     //act
     final String result = EmailValidator.validate(email);
     //assert
-    expect(result, EmailValidator.EMAIL_INVALID_FORMAT);
+    expect(result, EmailValidator.emailInvalidFormat);
 
   },);
 
@@ -39,7 +39,7 @@ void main(){
     //act
     final String result = EmailValidator.validate(email);
     //assert
-    expect(result, EmailValidator.EMAIL_INVALID_FORMAT);
+    expect(result, EmailValidator.emailInvalidFormat);
 
   },);
 
@@ -50,7 +50,7 @@ void main(){
     //act
     final String result = EmailValidator.validate(email);
     //assert
-    expect(result, EmailValidator.EMAIL_INVALID_FORMAT);
+    expect(result, EmailValidator.emailInvalidFormat);
 
   },);
 

@@ -28,7 +28,7 @@ void main(){
     //act
     final String result = PasswordValidator.validate(passw);
     //assert
-    expect(result, PasswordValidator.PASSWORD_INVALID_FORMAT);
+    expect(result, PasswordValidator.passwordInvalidFormat);
   },);
 
 
@@ -38,7 +38,7 @@ void main(){
     //act
     final String result = PasswordValidator.validate(passw);
     //assert
-    expect(result, PasswordValidator.PASSWORD_INVALID_FORMAT);
+    expect(result, PasswordValidator.passwordInvalidFormat);
   },);
 
 
@@ -48,7 +48,7 @@ void main(){
     //act
     final String result = PasswordValidator.validate(passw);
     //assert
-    expect(result, PasswordValidator.PASSWORD_INVALID_FORMAT);
+    expect(result, PasswordValidator.passwordInvalidFormat);
   },);
 
 
@@ -58,7 +58,7 @@ void main(){
     //act
     final String result = PasswordValidator.validate(passw);
     //assert
-    expect(result, PasswordValidator.PASSWORD_INVALID_FORMAT);
+    expect(result, PasswordValidator.passwordInvalidFormat);
   },);
 
 
@@ -68,7 +68,7 @@ void main(){
     //act
     final String result = PasswordValidator.validate(passw);
     //assert
-    expect(result, PasswordValidator.PASSWORD_INVALID_FORMAT);
+    expect(result, PasswordValidator.passwordInvalidFormat);
   },);
 
 
@@ -78,6 +78,6 @@ void main(){
     //act
     final String result = PasswordValidator.validate(passw);
     //assert
-    expect(result, PasswordValidator.PASSWORD_CANT_BE_EMPTY);
+    expect(result, PasswordValidator.passwordCantBeEmpty);
   },);
 }
