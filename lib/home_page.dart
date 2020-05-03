@@ -1,3 +1,4 @@
+import 'package:chat_app_front/features/auth/signup/pages/signUpPage.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -15,6 +16,15 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+      ),
+      body: Center(
+        child: RaisedButton(
+          child: Text('Sign up'),
+          onPressed: (){
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => SignUpPage()));
+          },
+        ),
       ),
     );
   }

@@ -16,8 +16,8 @@ class EmailValidator{
 }
 
 class PasswordValidator{
-  static String passwordCantBeEmpty = "Password can't be empty";
-  static String passwordInvalidFormat = "Your password is not strong enough. Please reenter.";
+  static final String passwordCantBeEmpty = "Password can't be empty";
+  static final String passwordInvalidFormat = "Your password is not strong enough. Please reenter.";
 
   static String validate(String value){
     String pattern = r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
