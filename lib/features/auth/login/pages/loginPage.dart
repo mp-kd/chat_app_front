@@ -1,22 +1,22 @@
-import 'package:chat_app_front/features/auth/signup/widget/signUpForm.dart';
+import 'package:chat_app_front/features/auth/login/widget/loginForm.dart';
 import 'package:flutter/material.dart';
 
-class SignUpPage extends StatefulWidget {
+class LoginPage extends StatefulWidget {
   @override
-  _SignUpPageState createState() => _SignUpPageState();
+  _LoginPageState createState() => _LoginPageState();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
+class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Sign Up'),),
+      appBar: AppBar(title: Text('Log In'),),
       body: Container(
         child: ListView(
           children: <Widget>[
             Column(
               children: <Widget>[
-                SignUpForm()
+                LoginForm()
               ],
             ),
           ],

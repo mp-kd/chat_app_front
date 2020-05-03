@@ -1,6 +1,8 @@
 import 'package:chat_app_front/features/auth/signup/pages/signUpPage.dart';
 import 'package:flutter/material.dart';
 
+import 'features/auth/login/pages/loginPage.dart';
+
 class HomePage extends StatefulWidget {
   final String title;
 
@@ -18,14 +20,27 @@ class _HomePageState extends State<HomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: RaisedButton(
-          child: Text('Sign up'),
-          onPressed: (){
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => SignUpPage()));
-          },
+        child: Container(
+          child: ListView(
+            children: <Widget>[
+              RaisedButton(
+                child: Text('Sign up'),
+                onPressed: (){
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => SignUpPage()));
+                  },
+              ),
+              RaisedButton(
+                child: Text('Login'),
+                onPressed: (){
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => LoginPage()));
+                },
+              ),
+                ],
+              ),
+          ),
         ),
-      ),
-    );
+      );
   }
 }
