@@ -1,9 +1,9 @@
 
-import 'package:chat_app_front/features/auth/core/validators.dart';
+import 'package:chat_app_front/auth/signup/validators.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main(){
-  test('PasswordValidator should return null', (){
+  test('should return null', (){
     //arrange
     final String passw = "zaq1@WSX";
     //act
@@ -12,7 +12,7 @@ void main(){
     expect(result, null);
   },);
 
-  test('PasswordValidator should return null', (){
+  test('should return null', (){
     //arrange
     final String passw = "Hwdp!234";
     //act
@@ -22,7 +22,7 @@ void main(){
   },);
 
 
-  test('PasswordValidator should return invalid format', (){
+  test('should return invalid format', (){
     //arrange
     final String passw = "hwdp!234";
     //act
@@ -32,7 +32,7 @@ void main(){
   },);
 
 
-  test('PasswordValidator should return invalid format', (){
+  test('should return invalid format', (){
     //arrange
     final String passw = "asd";
     //act
@@ -42,7 +42,7 @@ void main(){
   },);
 
 
-  test('PasswordValidator should return invalid format', (){
+  test('should return invalid format', (){
     //arrange
     final String passw = "asd12345";
     //act
@@ -52,7 +52,7 @@ void main(){
   },);
 
 
-  test('PasswordValidator should return invalid format', (){
+  test('should return invalid format', (){
     //arrange
     final String passw = "#@!12345";
     //act
@@ -62,7 +62,7 @@ void main(){
   },);
 
 
-  test('PasswordValidator should return invalid format', (){
+  test('should return invalid format', (){
     //arrange
     final String passw = "#s!12345";
     //act
@@ -72,7 +72,7 @@ void main(){
   },);
 
 
-  test('PasswordValidator should return cant be empty', (){
+  test('should return cant be empty', (){
     //arrange
     final String passw = "";
     //act

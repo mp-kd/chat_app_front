@@ -1,1 +1,1 @@
-final SERVER_IP = "https://mp-kd-chatapp.herokuapp.com";
+final SERVER_IP = "http://mp-kd-chatapp.herokuapp.com";

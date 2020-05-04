@@ -1,10 +1,10 @@
 
-import 'package:chat_app_front/features/auth/core/validators.dart';
+import 'package:chat_app_front/auth/signup/validators.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main(){
 
-  test('EmailValidator should return message that email cant be empty', (){
+  test('should return message that email cant be empty', (){
     //arrange
     final String email = '';
     //act
@@ -13,7 +13,7 @@ void main(){
     expect(result, EmailValidator.emailCantBeEmpty);
   },);
 
-  test('EmailValidator should return message that email is invalid format', (){
+  test('should return message that email is invalid format', (){
     //arrange
     final String email = "randommail";
     //act
@@ -23,7 +23,7 @@ void main(){
 
   },);
 
-  test('EmailValidator should return message that email is invalid format', (){
+  test('should return message that email is invalid format', (){
     //arrange
     final String email = "bad mail@a.com";
     //act
@@ -33,7 +33,7 @@ void main(){
 
   },);
 
-  test('EmailValidator should return message that email is invalid format', (){
+  test('should return message that email is invalid format', (){
     //arrange
     final String email = "badmail@a";
     //act
@@ -44,7 +44,7 @@ void main(){
   },);
 
 
-  test('EmailValidator should return message that email is invalid format', (){
+  test('should return message that email is invalid format', (){
     //arrange
     final String email = "badmail@.c";
     //act
@@ -54,7 +54,7 @@ void main(){
 
   },);
 
-  test('EmailValidator should return null', (){
+  test('should return null', (){
     //arrange
     final String email = "goodmail@gmail.com";
     //act
@@ -63,7 +63,7 @@ void main(){
     expect(result, null);
   },);
 
-  test('EmailValidator should return null', (){
+  test('should return null', (){
     //arrange
     final String email = "asdad@abc.xdd";
     //act
