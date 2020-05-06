@@ -17,7 +17,29 @@ class SignUpPage{
   }
 
   fillWithWorld(String input1, String input2) async{
-    //TODO: check how to fill worlds using driver
+    switch(input1){
+      case "usernamefield":{
+        await FlutterDriverUtils.enterText(_driver, txtFormUsername, input2);
+      }
+      break;
+      case "emailfield":{
+        await FlutterDriverUtils.enterText(_driver, txtFormEmail, input2);
+      }
+      break;
+      case "passwordfield":{
+        await FlutterDriverUtils.enterText(_driver, txtFormPassword, input2);
+      }
+      break;
+      case "repeatpasswordfield":{
+        await FlutterDriverUtils.enterText(_driver, txtFormRepeatedPassword, input2);
+      }
+      break;
+      default:{
+        //TODO: throw some error or smh
+        print("notfound field");
+      }
+      break;
+    }
   }
 
   tickTermsOfServiceCheckbox() async{
