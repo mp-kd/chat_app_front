@@ -16,4 +16,9 @@ class UserModel extends User{
       password: json['password']
     );
   }
+  Map<String, dynamic> toJson()=> {
+    'username': username,
+    'email': email,
+    'password': password
+  };
 }

@@ -20,17 +20,16 @@ void main(){
   final username1 = "test1";
   final email1 = "test@test.com";
   final password1 = "zaq1@WSX";
-  final user = User(username:"test1", email:"test@test.com", password:"zaq1@WSX");
-
-  test("should sign up user and return user", () async{
+  final user1 = User(username: username1, email: email1, password: password1);
+  test("should sign up user and return empty message", () async{
     //arrange
-    when(mockUserRepository.signUpUser(any, any, any))
-        .thenAnswer((_) async => Right(user));
+    when(mockUserRepository.signUpUser(any))
+        .thenAnswer((_) async => "");
     //act
     final result = await signUpUserUsecase(username: username1, email: email1, password: password1);
     //assert
-    expect(result, Right(user));
-    verify(mockUserRepository.signUpUser(username1, email1, password1));
+    expect(result, "");
+    verify(mockUserRepository.signUpUser(user1));
     verifyNoMoreInteractions(mockUserRepository);
   });
 }

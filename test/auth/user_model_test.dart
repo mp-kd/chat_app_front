@@ -24,4 +24,15 @@ void main(){
       expect(result, user);
     });
   });
+
+  group('to Json', (){
+    test('should return a JSON of model', () async {
+      //arrange
+      final Map<String, dynamic> jsonMap = json.decode(fixture('user_one.json'));
+      //act
+      final result = user.toJson();
+      //assert
+      expect(result, jsonMap);
+    });
+  });
 }
