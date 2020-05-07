@@ -1,5 +1,6 @@
 
 class SignUpStrings{
+  static final String appBarText = "Sign up";
   static final String usernameTextFormFieldText = "Username";
   static final String emailTextFormFieldText = "E-mail";
   static final String passwordTextFormFieldText = "Password";

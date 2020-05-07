@@ -1,4 +1,5 @@
 
+import 'package:chat_app_front/auth/signup/sign_up_page.dart';
 import 'package:flutter/material.dart';
 
 
@@ -10,7 +11,7 @@ class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
 }
-
+//TODO: add key props to form widgets
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
@@ -25,7 +26,7 @@ class _HomePageState extends State<HomePage> {
               MaterialButton(
                 child: Text('Sign up'),
                 onPressed: (){
-
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=> SignUpPage()));
                   },
               ),
               MaterialButton(
