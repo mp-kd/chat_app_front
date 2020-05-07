@@ -31,7 +31,19 @@ class _SignUpPageState extends State<SignUpPage> {
               children: <Widget>[
                 SignUpForm(
                   signUpUser: SignUpUser(userRepository),
-                )
+                ),
+                RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                          text: SignUpStrings.alreadyMemberText,
+                          style: TextStyle(color: Colors.grey, fontSize: 12)),
+                      TextSpan(
+                          text: SignUpStrings.loginText,
+                          style: TextStyle(color: Colors.blue, fontSize: 12))
+                    ],
+                  ),
+                ),
               ],
             ),
           ],

@@ -42,46 +42,33 @@ class _SignUpFormState extends State<SignUpForm> {
         key: _formKey,
         child: Column(
           children: <Widget>[
-            TextFormField(
-              key: Key(SignUpKeys.usernameTextFromField),
-              controller: _usernameController,
-              validator: UsernameValidator.validate,
-              decoration: InputDecoration(
-                  labelText: SignUpStrings.usernameTextFormFieldText,
-                  labelStyle: TextStyle(color: Colors.grey)),
-            ),
-            TextFormField(
-              key: Key(SignUpKeys.emailTextFromField),
-              controller: _emailController,
-              validator: EmailValidator.validate,
-              decoration: InputDecoration(
-                  labelText: SignUpStrings.emailTextFormFieldText,
-                  labelStyle: TextStyle(color: Colors.grey)),
-            ),
-            TextFormField(
-              key: Key(SignUpKeys.passwordTextFromField),
-              controller: _passwordController,
-              validator: PasswordValidator.validate,
-              obscureText: true,
-              decoration: InputDecoration(
-                  labelText: 'Password',
-                  labelStyle: TextStyle(color: Colors.grey)),
-            ),
-            TextFormField(
-              key: Key(SignUpKeys.repeatedPasswordTextFromField),
-              validator: (value) {
-                if (_passwordController.text != value) {
-                  return "Passwords doesn't match";
-                } else {
-                  return null;
-                }
-              },
-              controller: _repeatedPasswordController,
-              obscureText: true,
-              decoration: InputDecoration(
-                  labelText: 'Repeat password',
-                  labelStyle: TextStyle(color: Colors.grey)),
-            ),
+            _createTextFormField(
+                SignUpKeys.usernameTextFromField,
+                _usernameController,
+                SignUpStrings.usernameTextFormFieldText,
+                false,
+                UsernameValidator.validate),
+            _createTextFormField(
+                SignUpKeys.emailTextFromField,
+                _emailController,
+                SignUpStrings.emailTextFormFieldText,
+                false,
+                EmailValidator.validate),
+            _createTextFormField(
+                SignUpKeys.passwordTextFromField,
+                _passwordController,
+                SignUpStrings.passwordTextFormFieldText,
+                true,
+                PasswordValidator.validate),
+            _createTextFormField(
+                SignUpKeys.repeatedPasswordTextFromField,
+                _repeatedPasswordController,
+                SignUpStrings.repeatPasswordTextFormFieldLText,
+                true, (value) {
+              return _passwordController.text != value
+                  ? SignUpStrings.passwordsDifferentText
+                  : null;
+            }),
             Text(SignUpStrings.termsOfServiceText),
             MaterialButton(
               key: Key(SignUpKeys.submitButton),
@@ -94,9 +81,15 @@ class _SignUpFormState extends State<SignUpForm> {
                   final res = await signUpUser(
                       username: username, email: email, password: password);
                   if (res == "") {
-                    _showConfirmDialog(SignUpStrings.confirmSignUpAlertText);
+                    _showConfirmDialog(
+                        SignUpStrings.successAlertText,
+                        SignUpStrings.confirmSignUpAlertText,
+                        SignUpStrings.successAlertBtnText);
                   } else {
-                    _showConfirmDialog(res);
+                    _showConfirmDialog(
+                        SignUpStrings.failureAlertText,
+                        SignUpStrings.failureSignUpText,
+                        SignUpStrings.failureAlertBtnText);
                   }
                 }
               },
@@ -108,17 +101,35 @@ class _SignUpFormState extends State<SignUpForm> {
     );
   }
 
-  void _showConfirmDialog(String msg) {
+  TextFormField _createTextFormField(
+      String key,
+      TextEditingController controller,
+      String decorationText,
+      bool obscureText,
+      Function validator) {
+    return TextFormField(
+      key: Key(key),
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: decorationText,
+        labelStyle: TextStyle(color: Colors.grey),
+      ),
+      obscureText: obscureText,
+      validator: validator,
+    );
+  }
+
+  void _showConfirmDialog(String title, String msg, String btnMsg) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: new Text("Success"),
+          title: new Text(title),
           content: new Text(msg),
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
             new MaterialButton(
-              child: new Text("Ok"),
+              child: new Text(btnMsg),
               onPressed: () {
                 Navigator.of(context).pop();
               },
