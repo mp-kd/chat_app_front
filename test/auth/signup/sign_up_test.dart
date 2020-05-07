@@ -1,4 +1,3 @@
-
 import 'package:chat_app_front/auth/signup/sign_up_form.dart';
 import 'package:chat_app_front/auth/signup/sign_up_keys.dart';
 import 'package:chat_app_front/auth/signup/sign_up_strings.dart';
@@ -9,29 +8,32 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
-class MockSignUpUser extends Mock implements SignUpUser{}
+class MockSignUpUser extends Mock implements SignUpUser {}
 
-class MockNavigatorObserver extends Mock implements NavigatorObserver{}
+class MockNavigatorObserver extends Mock implements NavigatorObserver {}
 
-
-main(){
+main() {
   SignUpUser mockSignUpUser;
   NavigatorObserver mockObserver;
-  setUp((){
+  setUp(() {
     mockObserver = MockNavigatorObserver();
     mockSignUpUser = MockSignUpUser();
   });
 
-  Future<Null> _buildSignUpPage(WidgetTester tester) async{
+  Future<Null> _buildSignUpPage(WidgetTester tester) async {
     await tester.pumpWidget(MaterialApp(
-      home:Scaffold(
-        appBar: AppBar(title: Text(SignUpStrings.appBarText),),
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text(SignUpStrings.appBarText),
+        ),
         body: Container(
           child: ListView(
             children: <Widget>[
               Column(
                 children: <Widget>[
-                  SignUpForm(signUpUser: mockSignUpUser,)
+                  SignUpForm(
+                    signUpUser: mockSignUpUser,
+                  )
                 ],
               ),
             ],
@@ -53,7 +55,8 @@ main(){
   final repeatPasswordKey = Key(SignUpKeys.repeatedPasswordTextFromField);
   final submitButtonKey = Key(SignUpKeys.submitButton);
 
-  testWidgets("should sign up user and display confirmation alert", (WidgetTester tester)async{
+  testWidgets("should sign up user and display confirmation alert",
+      (WidgetTester tester) async {
     //arrange
     await _buildSignUpPage(tester);
     when(mockSignUpUser()).thenAnswer((_) async => "");
@@ -69,6 +72,5 @@ main(){
     //TODO: check if dialog poped up
     //verify(mockObserver.didPush(any, any));
     //expect(find.text(SignUpStrings.confirmSignUpAlertText), SignUpStrings.confirmSignUpAlertText);
-
   });
 }

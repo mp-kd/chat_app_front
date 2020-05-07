@@ -1,21 +1,18 @@
-
 import 'dart:convert';
 import 'package:chat_app_front/auth/user.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-
 import '../fixtures/fixture_reader.dart';
 
+void main() {
+  final user =
+      User(name: "test1", email: "test@test.com", password: "zaq1@WSX");
 
-void main(){
-
-  final user = User(name:"test1", email:"test@test.com", password:"zaq1@WSX");
-
-
-  group("from Json", (){
-    test('should return a valid model when JSON are proper strings', () async{
+  group("from Json", () {
+    test('should return a valid model when JSON are proper strings', () async {
       //arrange
-      final Map<String, dynamic> jsonMap = json.decode(fixture('user_one.json'));
+      final Map<String, dynamic> jsonMap =
+          json.decode(fixture('user_one.json'));
       //act
       final result = User.fromJson(jsonMap);
       //assert
@@ -23,10 +20,11 @@ void main(){
     });
   });
 
-  group('to Json', (){
+  group('to Json', () {
     test('should return a JSON of model', () async {
       //arrange
-      final Map<String, dynamic> jsonMap = json.decode(fixture('user_one.json'));
+      final Map<String, dynamic> jsonMap =
+          json.decode(fixture('user_one.json'));
       //act
       final result = user.toJson();
       //assert

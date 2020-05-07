@@ -6,10 +6,11 @@ import 'package:flutter/material.dart';
 import 'sign_up_user.dart';
 import 'validators.dart';
 
-class SignUpForm extends StatefulWidget{
+class SignUpForm extends StatefulWidget {
   final SignUpUser signUpUser;
 
   const SignUpForm({Key key, this.signUpUser}) : super(key: key);
+
   @override
   _SignUpFormState createState() => _SignUpFormState(signUpUser);
 }
@@ -25,7 +26,7 @@ class _SignUpFormState extends State<SignUpForm> {
   _SignUpFormState(this.signUpUser);
 
   @override
-  void dispose(){
+  void dispose() {
     _emailController.dispose();
     _usernameController.dispose();
     _passwordController.dispose();
@@ -47,10 +48,7 @@ class _SignUpFormState extends State<SignUpForm> {
               validator: UsernameValidator.validate,
               decoration: InputDecoration(
                   labelText: SignUpStrings.usernameTextFormFieldText,
-                  labelStyle: TextStyle(
-                      color: Colors.grey
-                  )
-              ),
+                  labelStyle: TextStyle(color: Colors.grey)),
             ),
             TextFormField(
               key: Key(SignUpKeys.emailTextFromField),
@@ -58,10 +56,7 @@ class _SignUpFormState extends State<SignUpForm> {
               validator: EmailValidator.validate,
               decoration: InputDecoration(
                   labelText: SignUpStrings.emailTextFormFieldText,
-                  labelStyle: TextStyle(
-                      color: Colors.grey
-                  )
-              ),
+                  labelStyle: TextStyle(color: Colors.grey)),
             ),
             TextFormField(
               key: Key(SignUpKeys.passwordTextFromField),
@@ -70,18 +65,14 @@ class _SignUpFormState extends State<SignUpForm> {
               obscureText: true,
               decoration: InputDecoration(
                   labelText: 'Password',
-                  labelStyle: TextStyle(
-                      color: Colors.grey
-                  )
-              ),
+                  labelStyle: TextStyle(color: Colors.grey)),
             ),
             TextFormField(
               key: Key(SignUpKeys.repeatedPasswordTextFromField),
               validator: (value) {
-                if(_passwordController.text != value){
+                if (_passwordController.text != value) {
                   return "Passwords doesn't match";
-                }
-                else{
+                } else {
                   return null;
                 }
               },
@@ -89,24 +80,22 @@ class _SignUpFormState extends State<SignUpForm> {
               obscureText: true,
               decoration: InputDecoration(
                   labelText: 'Repeat password',
-                  labelStyle: TextStyle(
-                      color: Colors.grey
-                  )
-              ),
+                  labelStyle: TextStyle(color: Colors.grey)),
             ),
             Text(SignUpStrings.termsOfServiceText),
             MaterialButton(
               key: Key(SignUpKeys.submitButton),
-              onPressed: ()async{
+              onPressed: () async {
                 FocusScope.of(context).unfocus();
-                if(_formKey.currentState.validate()){
+                if (_formKey.currentState.validate()) {
                   var username = _usernameController.text;
                   var email = _emailController.text;
                   var password = _passwordController.text;
-                  final res = await signUpUser(username: username, email: email, password: password);
-                  if(res == ""){
+                  final res = await signUpUser(
+                      username: username, email: email, password: password);
+                  if (res == "") {
                     _showConfirmDialog(SignUpStrings.confirmSignUpAlertText);
-                  }else{
+                  } else {
                     _showConfirmDialog(res);
                   }
                 }
@@ -139,7 +128,4 @@ class _SignUpFormState extends State<SignUpForm> {
       },
     );
   }
-
-
 }
-

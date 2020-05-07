@@ -5,6 +5,7 @@ import 'auth/signup/sign_up_page.dart';
 import 'home_page.dart';
 
 final storage = FlutterSecureStorage();
+
 void main() {
   runApp(ChatApp());
 }
@@ -20,7 +21,9 @@ class ChatApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => HomePage(title: "Chatapp",),
+        '/': (context) => HomePage(
+              title: "Chatapp",
+            ),
         '/signup': (context) => SignUpPage()
       },
     );

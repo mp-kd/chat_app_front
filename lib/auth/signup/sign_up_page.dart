@@ -21,13 +21,17 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(SignUpStrings.appBarText),),
+      appBar: AppBar(
+        title: Text(SignUpStrings.appBarText),
+      ),
       body: Container(
         child: ListView(
           children: <Widget>[
             Column(
               children: <Widget>[
-                SignUpForm(signUpUser: SignUpUser(userRepository),)
+                SignUpForm(
+                  signUpUser: SignUpUser(userRepository),
+                )
               ],
             ),
           ],

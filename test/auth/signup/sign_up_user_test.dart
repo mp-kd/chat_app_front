@@ -6,14 +6,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
+class MockUserRepository extends Mock implements UserRepository {}
 
-class MockUserRepository extends Mock implements UserRepository{}
-
-void main(){
+void main() {
   MockUserRepository mockUserRepository;
   SignUpUser signUpUserUsecase;
 
-  setUp((){
+  setUp(() {
     mockUserRepository = MockUserRepository();
     signUpUserUsecase = SignUpUser(mockUserRepository);
   });
@@ -22,12 +21,12 @@ void main(){
   final email1 = "test@test.com";
   final password1 = "zaq1@WSX";
   final user1 = User(name: username1, email: email1, password: password1);
-  test("should sign up user and return empty message", () async{
+  test("should sign up user and return empty message", () async {
     //arrange
-    when(mockUserRepository.signUpUser(any))
-        .thenAnswer((_) async => "");
+    when(mockUserRepository.signUpUser(any)).thenAnswer((_) async => "");
     //act
-    final result = await signUpUserUsecase(username: username1, email: email1, password: password1);
+    final result = await signUpUserUsecase(
+        username: username1, email: email1, password: password1);
     //assert
     expect(result, "");
     verify(mockUserRepository.signUpUser(user1));

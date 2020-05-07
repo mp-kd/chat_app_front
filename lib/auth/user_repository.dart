@@ -4,5 +4,5 @@ import 'package:dartz/dartz.dart';
 import '../common/failure.dart';
 
 abstract class UserRepository {
-  Future<String>signUpUser(User user);
+  Future<String> signUpUser(User user);
 }

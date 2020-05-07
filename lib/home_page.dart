@@ -1,7 +1,5 @@
-
 import 'package:chat_app_front/auth/signup/sign_up_page.dart';
 import 'package:flutter/material.dart';
-
 
 class HomePage extends StatefulWidget {
   final String title;
@@ -25,20 +23,18 @@ class _HomePageState extends State<HomePage> {
             children: <Widget>[
               MaterialButton(
                 child: Text('Sign up'),
-                onPressed: (){
-                    Navigator.pushNamed(context, '/signup');
-                  },
+                onPressed: () {
+                  Navigator.pushNamed(context, '/signup');
+                },
               ),
               MaterialButton(
                 child: Text('Login'),
-                onPressed: (){
-
-                },
+                onPressed: () {},
               ),
-                ],
-              ),
+            ],
           ),
         ),
-      );
+      ),
+    );
   }
 }
