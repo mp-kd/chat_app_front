@@ -1,14 +1,23 @@
 import 'package:chat_app_front/auth/signup/sign_up_strings.dart';
+import 'package:chat_app_front/auth/user_repository.dart';
+import 'package:chat_app_front/auth/user_repository_impl.dart';
 import 'package:flutter/material.dart';
 
 import 'sign_up_form.dart';
+import 'sign_up_user.dart';
 
 class SignUpPage extends StatefulWidget {
+  final UserRepository userRepository = UserRepositoryImpl();
+
   @override
-  _SignUpPageState createState() => _SignUpPageState();
+  _SignUpPageState createState() => _SignUpPageState(userRepository);
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  final UserRepository userRepository;
+
+  _SignUpPageState(this.userRepository);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,7 +27,7 @@ class _SignUpPageState extends State<SignUpPage> {
           children: <Widget>[
             Column(
               children: <Widget>[
-                SignUpForm()
+                SignUpForm(signUpUser: SignUpUser(userRepository),)
               ],
             ),
           ],

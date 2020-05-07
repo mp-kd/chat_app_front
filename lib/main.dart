@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+import 'auth/signup/sign_up_page.dart';
 import 'home_page.dart';
 
 final storage = FlutterSecureStorage();
@@ -17,7 +18,11 @@ class ChatApp extends StatelessWidget {
         primarySwatch: Colors.green,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: HomePage(title: 'Chat App Home Page'),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => HomePage(title: "Chatapp",),
+        '/signup': (context) => SignUpPage()
+      },
     );
   }
 }

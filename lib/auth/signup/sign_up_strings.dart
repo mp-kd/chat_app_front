@@ -7,4 +7,5 @@ class SignUpStrings{
   static final String repeatPasswordTextFormFieldLText = "Repeat password";
   static final String termsOfServiceText = "By clicking Sign up you agree to Chatapp's Terms of Service";
   static final String submitButtonText = "Sign up";
+  static final String confirmSignUpAlertText = "Sign up successful.\nNow you can log in.";
 }

@@ -10,6 +10,6 @@ class SignUpUser{
   SignUpUser(this.repository);
 
   Future<String>call({String username, String email, String password}) async{
-    return await repository.signUpUser(User(username: username, email: email, password: password));
+    return await repository.signUpUser(User(name: username, email: email, password: password));
   }
 }
