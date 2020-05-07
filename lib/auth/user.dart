@@ -1,6 +1,7 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 
-class User{
+class User extends Equatable{
   String username;
   String email;
   String password;
@@ -9,4 +10,7 @@ class User{
     @required this.email,
     @required this.password
   });
+
+  @override
+  List<Object> get props => [username, email, password];
 }
