@@ -33,8 +33,8 @@ class _SignUpFormState extends State<SignUpForm> {
       SignUpKeys.repeatedPasswordTextFromField,
       SignUpStrings.repeatPasswordTextFormFieldLText,
       true, (value) {
-        //TODO: cant use static _passwordTextField
-        return null;
+    //TODO: cant use static _passwordTextField
+    return null;
   });
 
   final UserService signUpUser;
@@ -45,8 +45,6 @@ class _SignUpFormState extends State<SignUpForm> {
   void dispose() {
     super.dispose();
   }
-
-  //TODO:
 
   @override
   Widget build(BuildContext context) {
