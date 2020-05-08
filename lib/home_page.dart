@@ -1,4 +1,3 @@
-import 'package:chat_app_front/auth/signup/sign_up_page.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {

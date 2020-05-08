@@ -2,6 +2,7 @@ import 'package:chat_app_front/auth/signup/sign_up_keys.dart';
 import 'package:chat_app_front/auth/signup/sign_up_strings.dart';
 import 'package:chat_app_front/auth/user.dart';
 import 'package:chat_app_front/auth/user_service.dart';
+import 'package:chat_app_front/auth/auth_widgets.dart';
 import 'package:flutter/material.dart';
 
 import 'validators.dart';
@@ -17,11 +18,7 @@ class SignUpForm extends StatefulWidget {
 
 class _SignUpFormState extends State<SignUpForm> {
   final _formKey = GlobalKey<FormState>();
-  final _usernameTextField = _createTextFormField(
-      SignUpKeys.usernameTextFromField,
-      SignUpStrings.usernameTextFormFieldText,
-      false,
-      UsernameValidator.validate);
+  final _usernameTextField = UsernameField(UsernameValidator.validate, SignUpKeys.usernameTextFromField);
   final _emailTextField = _createTextFormField(SignUpKeys.emailTextFromField,
       SignUpStrings.emailTextFormFieldText, false, EmailValidator.validate);
   final _passwordTextField = _createTextFormField(
