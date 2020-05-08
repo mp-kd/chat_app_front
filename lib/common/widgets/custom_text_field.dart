@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 //TODO: FIX controller issue
-class CustomTextField extends StatefulWidget{
+class CustomTextField extends StatefulWidget {
   final String keyStr;
   final String decorationText;
   final bool isPassword;
@@ -12,7 +12,8 @@ class CustomTextField extends StatefulWidget{
       this.keyStr, this.decorationText, this.isPassword, this.validator);
 
   @override
-  State<StatefulWidget> createState() => _CustomTextField(keyStr, decorationText, isPassword, validator);
+  State<StatefulWidget> createState() =>
+      _CustomTextField(keyStr, decorationText, isPassword, validator);
 }
 
 class _CustomTextField extends State<CustomTextField> {
@@ -21,7 +22,9 @@ class _CustomTextField extends State<CustomTextField> {
   final bool isPassword;
   final String Function(String) validator;
 
-  _CustomTextField(this.keyStr, this.decorationText, this.isPassword, this.validator);
+  _CustomTextField(
+      this.keyStr, this.decorationText, this.isPassword, this.validator);
+
   @override
   Widget build(BuildContext context) {
     return TextFormField(
