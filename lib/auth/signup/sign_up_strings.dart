@@ -32,4 +32,6 @@ class SignUpStrings {
   static final String failureCantConnectToServerSignUpText =
       "Can't connect to server";
   static final String failureUnknownReasonSignUpText = "Something went wrong";
+
+  static final String signUpButtonText = "Sign up";
 }

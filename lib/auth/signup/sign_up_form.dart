@@ -64,7 +64,7 @@ class _SignUpFormState extends State<SignUpForm> {
             MaterialButton(
               key: Key(SignUpKeys.submitButton),
               onPressed: _onPressedSubmitButton,
-              child: Text('Sign Up'),
+              child: Text(SignUpStrings.signUpButtonText),
             ),
           ],
         ),
