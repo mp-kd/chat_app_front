@@ -1,38 +1,52 @@
 import 'package:chat_app_front/auth/signup/sign_up_keys.dart';
 import 'package:chat_app_front/auth/signup/sign_up_strings.dart';
-import 'package:chat_app_front/auth/user_repository_impl.dart';
+import 'package:chat_app_front/auth/user.dart';
+import 'package:chat_app_front/auth/user_service.dart';
 import 'package:flutter/material.dart';
 
-import 'sign_up_user.dart';
 import 'validators.dart';
 
 class SignUpForm extends StatefulWidget {
-  final SignUpUser signUpUser;
+  final UserService userRepository;
 
-  const SignUpForm({Key key, this.signUpUser}) : super(key: key);
+  const SignUpForm({Key key, this.userRepository}) : super(key: key);
 
   @override
-  _SignUpFormState createState() => _SignUpFormState(signUpUser);
+  _SignUpFormState createState() => _SignUpFormState(userRepository);
 }
 
 class _SignUpFormState extends State<SignUpForm> {
   final _formKey = GlobalKey<FormState>();
-  final _usernameController = TextEditingController();
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-  final _repeatedPasswordController = TextEditingController();
-  final SignUpUser signUpUser;
+  final _usernameTextField = _createTextFormField(
+      SignUpKeys.usernameTextFromField,
+      SignUpStrings.usernameTextFormFieldText,
+      false,
+      UsernameValidator.validate);
+  final _emailTextField = _createTextFormField(SignUpKeys.emailTextFromField,
+      SignUpStrings.emailTextFormFieldText, false, EmailValidator.validate);
+  final _passwordTextField = _createTextFormField(
+      SignUpKeys.passwordTextFromField,
+      SignUpStrings.passwordTextFormFieldText,
+      true,
+      PasswordValidator.validate);
+  final _repeatedPasswordTextField = _createTextFormField(
+      SignUpKeys.repeatedPasswordTextFromField,
+      SignUpStrings.repeatPasswordTextFormFieldLText,
+      true, (value) {
+        //TODO: cant use static _passwordTextField
+        return null;
+  });
+
+  final UserService signUpUser;
 
   _SignUpFormState(this.signUpUser);
 
   @override
   void dispose() {
-    _emailController.dispose();
-    _usernameController.dispose();
-    _passwordController.dispose();
-    _repeatedPasswordController.dispose();
     super.dispose();
   }
+
+  //TODO:
 
   @override
   Widget build(BuildContext context) {
@@ -42,57 +56,14 @@ class _SignUpFormState extends State<SignUpForm> {
         key: _formKey,
         child: Column(
           children: <Widget>[
-            _createTextFormField(
-                SignUpKeys.usernameTextFromField,
-                _usernameController,
-                SignUpStrings.usernameTextFormFieldText,
-                false,
-                UsernameValidator.validate),
-            _createTextFormField(
-                SignUpKeys.emailTextFromField,
-                _emailController,
-                SignUpStrings.emailTextFormFieldText,
-                false,
-                EmailValidator.validate),
-            _createTextFormField(
-                SignUpKeys.passwordTextFromField,
-                _passwordController,
-                SignUpStrings.passwordTextFormFieldText,
-                true,
-                PasswordValidator.validate),
-            _createTextFormField(
-                SignUpKeys.repeatedPasswordTextFromField,
-                _repeatedPasswordController,
-                SignUpStrings.repeatPasswordTextFormFieldLText,
-                true, (value) {
-              return _passwordController.text != value
-                  ? SignUpStrings.passwordsDifferentText
-                  : null;
-            }),
+            _usernameTextField,
+            _emailTextField,
+            _passwordTextField,
+            _repeatedPasswordTextField,
             Text(SignUpStrings.termsOfServiceText),
             MaterialButton(
               key: Key(SignUpKeys.submitButton),
-              onPressed: () async {
-                FocusScope.of(context).unfocus();
-                if (_formKey.currentState.validate()) {
-                  var username = _usernameController.text;
-                  var email = _emailController.text;
-                  var password = _passwordController.text;
-                  final res = await signUpUser(
-                      username: username, email: email, password: password);
-                  if (res == "") {
-                    _showConfirmDialog(
-                        SignUpStrings.successAlertText,
-                        SignUpStrings.confirmSignUpAlertText,
-                        SignUpStrings.successAlertBtnText);
-                  } else {
-                    _showConfirmDialog(
-                        SignUpStrings.failureAlertText,
-                        SignUpStrings.failureSignUpText,
-                        SignUpStrings.failureAlertBtnText);
-                  }
-                }
-              },
+              onPressed: _onPressedSubmitButton,
               child: Text('Sign Up'),
             ),
           ],
@@ -101,15 +72,10 @@ class _SignUpFormState extends State<SignUpForm> {
     );
   }
 
-  TextFormField _createTextFormField(
-      String key,
-      TextEditingController controller,
-      String decorationText,
-      bool obscureText,
-      Function validator) {
+  static TextFormField _createTextFormField(
+      String key, String decorationText, bool obscureText, Function validator) {
     return TextFormField(
       key: Key(key),
-      controller: controller,
       decoration: InputDecoration(
         labelText: decorationText,
         labelStyle: TextStyle(color: Colors.grey),
@@ -119,7 +85,59 @@ class _SignUpFormState extends State<SignUpForm> {
     );
   }
 
-  void _showConfirmDialog(String title, String msg, String btnMsg) {
+  void _onPressedSubmitButton() async {
+    FocusScope.of(context).unfocus();
+    if (_formKey.currentState.validate()) {
+      var username = _usernameTextField.controller.text;
+      var email = _emailTextField.controller.text;
+      var password = _passwordTextField.controller.text;
+      final response = await signUpUser
+          .signUpUser(User(name: username, email: email, password: password));
+
+      String title, msgText, btnText;
+      switch (response) {
+        case UserServiceResponse.SUCCESS:
+          title = SignUpStrings.successAlertText;
+          msgText = SignUpStrings.confirmSignUpAlertText;
+          btnText = SignUpStrings.successAlertBtnText;
+          break;
+        case UserServiceResponse.USERNAME_ALREADY_IN_USE:
+          title = SignUpStrings.failureAlertText;
+          msgText = SignUpStrings.failureUsernameAlreadyInUseSignUpText;
+          btnText = SignUpStrings.failureAlertBtnText;
+          break;
+        case UserServiceResponse.EMAIL_ALREADY_IN_USE:
+          title = SignUpStrings.failureAlertText;
+          msgText = SignUpStrings.failureEmailAlreadyInUseSignUpText;
+          btnText = SignUpStrings.failureAlertBtnText;
+          break;
+        case UserServiceResponse.INVALID_PASSWORD:
+          title = SignUpStrings.failureAlertText;
+          msgText = SignUpStrings.failureInvalidPasswordSignUpText;
+          btnText = SignUpStrings.failureAlertBtnText;
+          break;
+        case UserServiceResponse.CANT_CONNECT_TO_SERVER:
+          title = SignUpStrings.failureAlertText;
+          msgText = SignUpStrings.failureCantConnectToServerSignUpText;
+          btnText = SignUpStrings.failureAlertBtnText;
+          break;
+        case UserServiceResponse.UNKNOWN_REASON:
+          title = SignUpStrings.failureAlertText;
+          msgText = SignUpStrings.failureUnknownReasonSignUpText;
+          btnText = SignUpStrings.failureAlertBtnText;
+          break;
+        default:
+          title = SignUpStrings.failureAlertText;
+          msgText = SignUpStrings.failureUnknownReasonSignUpText;
+          btnText = SignUpStrings.failureAlertBtnText;
+          break;
+      }
+      _showDialog(context, title, msgText, btnText);
+    }
+  }
+
+  static void _showDialog(
+      BuildContext context, String title, String msg, String btnMsg) {
     showDialog(
       context: context,
       builder: (BuildContext context) {

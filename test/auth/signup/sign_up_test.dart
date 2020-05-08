@@ -1,23 +1,23 @@
 import 'package:chat_app_front/auth/signup/sign_up_form.dart';
 import 'package:chat_app_front/auth/signup/sign_up_keys.dart';
 import 'package:chat_app_front/auth/signup/sign_up_strings.dart';
-import 'package:chat_app_front/auth/signup/sign_up_user.dart';
-import 'package:chat_app_front/auth/user_repository.dart';
+
+import 'package:chat_app_front/auth/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
-class MockSignUpUser extends Mock implements SignUpUser {}
-
 class MockNavigatorObserver extends Mock implements NavigatorObserver {}
 
+class MockUserService extends Mock implements UserService {}
+
 main() {
-  SignUpUser mockSignUpUser;
+  UserService mockUserService;
   NavigatorObserver mockObserver;
   setUp(() {
     mockObserver = MockNavigatorObserver();
-    mockSignUpUser = MockSignUpUser();
+    mockUserService = MockUserService();
   });
 
   Future<Null> _buildSignUpPage(WidgetTester tester) async {
@@ -32,7 +32,7 @@ main() {
               Column(
                 children: <Widget>[
                   SignUpForm(
-                    signUpUser: mockSignUpUser,
+                    userRepository: mockUserService,
                   )
                 ],
               ),
@@ -45,10 +45,6 @@ main() {
     verify(mockObserver.didPush(any, any));
   }
 
-  final username1 = "test1";
-  final email1 = "test@test.com";
-  final password1 = "zaq1@WSX";
-  final repeatPassword1 = "zaq1@WSX";
   final usernameKey = Key(SignUpKeys.usernameTextFromField);
   final emailKey = Key(SignUpKeys.emailTextFromField);
   final passwordKey = Key(SignUpKeys.passwordTextFromField);
@@ -58,13 +54,19 @@ main() {
   testWidgets("should sign up user and display confirmation alert",
       (WidgetTester tester) async {
     //arrange
+    final validUsername = "test1";
+    final validEmail = "test@test.com";
+    final validPassword = "zaq1@WSX";
+    final validRepeatedPassword = "zaq1@WSX";
     await _buildSignUpPage(tester);
-    when(mockSignUpUser()).thenAnswer((_) async => "");
+    when(mockUserService.signUpUser(any))
+        .thenAnswer((_) async => UserServiceResponse.SUCCESS);
 
-    await tester.enterText(find.byKey(usernameKey), username1);
-    await tester.enterText(find.byKey(emailKey), email1);
-    await tester.enterText(find.byKey(passwordKey), password1);
-    await tester.enterText(find.byKey(repeatPasswordKey), repeatPassword1);
+    await tester.enterText(find.byKey(usernameKey), validUsername);
+    await tester.enterText(find.byKey(emailKey), validEmail);
+    await tester.enterText(find.byKey(passwordKey), validPassword);
+    await tester.enterText(
+        find.byKey(repeatPasswordKey), validRepeatedPassword);
     //act
     await tester.tap(find.byKey(submitButtonKey));
     await tester.pumpAndSettle();

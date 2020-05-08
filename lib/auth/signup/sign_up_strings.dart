@@ -21,4 +21,15 @@ class SignUpStrings {
 
   static final String alreadyMemberText = "Already a member? ";
   static final String loginText = "Log in";
+
+  static final String failureUsernameAlreadyInUseSignUpText =
+      "Username already in use";
+
+  static final String failureEmailAlreadyInUseSignUpText =
+      "Email already in use";
+  static final String failureInvalidPasswordSignUpText =
+      "Password should containt at least 1 lower case, 1 upper case, 1 number, 1 special character ( ! @ # \$ & * ~ )";
+  static final String failureCantConnectToServerSignUpText =
+      "Can't connect to server";
+  static final String failureUnknownReasonSignUpText = "Something went wrong";
 }
