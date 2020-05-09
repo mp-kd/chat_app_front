@@ -40,36 +40,38 @@ class _SignUpFormState extends State<SignUpForm> {
         key: _formKey,
         child: Column(
           children: <Widget>[
-            createTextFormField(
-                SignUpKeys.usernameTextFromField,
-                SignUpStrings.usernameTextFormFieldText,
-                false,
-                UsernameValidator.validate,
-                _usernameController),
-            createTextFormField(
-                SignUpKeys.emailTextFromField,
-                SignUpStrings.emailTextFormFieldText,
-                false,
-                EmailValidator.validate,
-                _emailController),
-            createTextFormField(
-                SignUpKeys.passwordTextFromField,
-                SignUpStrings.passwordTextFormFieldText,
-                true,
-                PasswordValidator.validate,
-                _passwordController),
-            createTextFormField(SignUpKeys.repeatedPasswordTextFromField,
-                SignUpStrings.repeatPasswordTextFormFieldLText, true, (value) {
-              return _passwordController.text !=
-                      _repeatedPasswordController.text
-                  ? SignUpStrings.passwordsDifferentText
-                  : null;
-            }, _repeatedPasswordController),
+            UsernameField(
+              validator: UsernameValidator.validate,
+              controller: _usernameController,
+              key: Key(SignUpKeys.usernameTextFromField),
+            ),
+            EmailField(
+              validator: EmailValidator.validate,
+              controller: _emailController,
+              key: Key(SignUpKeys.emailTextFromField),
+            ),
+            PasswordField(
+              validator: PasswordValidator.validate,
+              controller: _passwordController,
+              key: Key(SignUpKeys.passwordTextFromField),
+              labelText: SignUpStrings.passwordTextFormFieldText,
+            ),
+            PasswordField(
+              controller: _repeatedPasswordController,
+              key: Key(SignUpKeys.repeatedPasswordTextFromField),
+              validator: (value) {
+                return _passwordController.text !=
+                        _repeatedPasswordController.text
+                    ? SignUpStrings.passwordsDifferentText
+                    : null;
+              },
+              labelText: SignUpStrings.repeatPasswordTextFormFieldLText,
+            ),
             Text(SignUpStrings.termsOfServiceText),
             MaterialButton(
               key: Key(SignUpKeys.submitButton),
               onPressed: _onPressedSubmitButton,
-              child: Text(SignUpStrings.signUpButtonText),
+              child: Text(SignUpStrings.signUpText),
             ),
           ],
         ),
@@ -85,46 +87,33 @@ class _SignUpFormState extends State<SignUpForm> {
       var password = _passwordController.text;
       final response = await signUpUser
           .signUpUser(User(name: username, email: email, password: password));
-
       String title, msgText, btnText;
-      switch (response) {
-        case UserServiceResponse.SUCCESS:
-          title = SignUpStrings.successAlertText;
-          msgText = SignUpStrings.confirmSignUpAlertText;
-          btnText = SignUpStrings.successAlertBtnText;
-          break;
-        case UserServiceResponse.USERNAME_ALREADY_IN_USE:
-          title = SignUpStrings.failureAlertText;
-          msgText = SignUpStrings.failureUsernameAlreadyInUseSignUpText;
-          btnText = SignUpStrings.failureAlertBtnText;
-          break;
-        case UserServiceResponse.EMAIL_ALREADY_IN_USE:
-          title = SignUpStrings.failureAlertText;
-          msgText = SignUpStrings.failureEmailAlreadyInUseSignUpText;
-          btnText = SignUpStrings.failureAlertBtnText;
-          break;
-        case UserServiceResponse.INVALID_PASSWORD:
-          title = SignUpStrings.failureAlertText;
-          msgText = SignUpStrings.failureInvalidPasswordSignUpText;
-          btnText = SignUpStrings.failureAlertBtnText;
-          break;
-        case UserServiceResponse.CANT_CONNECT_TO_SERVER:
-          title = SignUpStrings.failureAlertText;
-          msgText = SignUpStrings.failureCantConnectToServerSignUpText;
-          btnText = SignUpStrings.failureAlertBtnText;
-          break;
-        case UserServiceResponse.UNKNOWN_REASON:
-          title = SignUpStrings.failureAlertText;
-          msgText = SignUpStrings.failureUnknownReasonSignUpText;
-          btnText = SignUpStrings.failureAlertBtnText;
-          break;
-        default:
-          title = SignUpStrings.failureAlertText;
-          msgText = SignUpStrings.failureUnknownReasonSignUpText;
-          btnText = SignUpStrings.failureAlertBtnText;
-          break;
+      if (response == UserServiceResponse.SUCCESS) {
+        title = SignUpStrings.successAlertText;
+        btnText = SignUpStrings.successAlertText;
+      } else {
+        title = SignUpStrings.failureAlertText;
+        btnText = SignUpStrings.okText;
       }
+      msgText = _resolveMessage(response);
       showDialogWithBtn(context, title, msgText, btnText);
+    }
+  }
+
+  String _resolveMessage(UserServiceResponse response) {
+    switch (response) {
+      case UserServiceResponse.SUCCESS:
+        return SignUpStrings.confirmSignUpAlertText;
+      case UserServiceResponse.USERNAME_ALREADY_IN_USE:
+        return SignUpStrings.failureEmailAlreadyInUseSignUpText;
+      case UserServiceResponse.EMAIL_ALREADY_IN_USE:
+        return SignUpStrings.failureEmailAlreadyInUseSignUpText;
+      case UserServiceResponse.INVALID_PASSWORD:
+        return SignUpStrings.failureInvalidPasswordSignUpText;
+      case UserServiceResponse.CANT_CONNECT_TO_SERVER:
+        return SignUpStrings.failureCantConnectToServerSignUpText;
+      default:
+        return SignUpStrings.failureUnknownReasonSignUpText;
     }
   }
 }

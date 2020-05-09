@@ -2,20 +2,6 @@ import 'package:chat_app_front/auth/signup/sign_up_strings.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-TextFormField createTextFormField(String key, String decorationText,
-    bool obscureText, Function validator, TextEditingController controller) {
-  return TextFormField(
-    controller: controller,
-    key: Key(key),
-    decoration: InputDecoration(
-      labelText: decorationText,
-      labelStyle: TextStyle(color: Colors.grey),
-    ),
-    obscureText: obscureText,
-    validator: validator,
-  );
-}
-
 void showDialogWithBtn(
     BuildContext context, String title, String msg, String btnMsg) {
   showDialog(
@@ -38,84 +24,94 @@ void showDialogWithBtn(
   );
 }
 
-class UsernameField implements TextFormField {
-  final TextFormField _textFormField;
+class UsernameField extends StatefulWidget {
+  final TextEditingController controller;
+  final String Function(String) validator;
 
-  UsernameField(String Function(String) validator, String key)
-      : _textFormField = TextFormField(
-          validator: validator,
-          key: Key(key),
-          decoration: InputDecoration(
-            labelText: SignUpStrings.usernameTextFormFieldText,
-            labelStyle: TextStyle(
-              color: Colors.grey,
-            ),
-          ),
-        );
+  const UsernameField({Key key, this.controller, this.validator})
+      : super(key: key);
 
   @override
-  bool get autovalidate => _textFormField.autovalidate;
+  State<StatefulWidget> createState() =>
+      _UsernameState(controller, validator);
+}
+
+class _UsernameState extends State<UsernameField> {
+  final TextEditingController controller;
+  final String Function(String) validator;
+
+  _UsernameState(this.controller, this.validator);
 
   @override
-  get builder => _textFormField.builder;
+  Widget build(BuildContext context) {
+    return TextFormField(
+      validator: validator,
+      controller: controller,
+      decoration: InputDecoration(
+          labelText: SignUpStrings.usernameTextFormFieldText,
+          labelStyle: TextStyle(color: Colors.grey)),
+    );
+  }
+}
+
+class EmailField extends StatefulWidget {
+  final TextEditingController controller;
+  final String Function(String) validator;
+
+  const EmailField({Key key, this.controller, this.validator})
+      : super(key: key);
 
   @override
-  TextEditingController get controller => _textFormField.controller;
+  State<StatefulWidget> createState() =>
+      _EmailFieldState(controller, validator);
+}
+
+class _EmailFieldState extends State<EmailField> {
+  final TextEditingController controller;
+  final String Function(String) validator;
+
+  _EmailFieldState(this.controller, this.validator);
 
   @override
-  StatefulElement createElement() => _textFormField.createElement();
+  Widget build(BuildContext context) {
+    return TextFormField(
+      validator: validator,
+      controller: controller,
+      decoration: InputDecoration(
+          labelText: SignUpStrings.emailTextFormFieldText,
+          labelStyle: TextStyle(color: Colors.grey)),
+    );
+  }
+}
+
+class PasswordField extends StatefulWidget {
+  final TextEditingController controller;
+  final String Function(String) validator;
+  final String labelText;
+
+  const PasswordField({Key key, this.controller, this.validator, this.labelText})
+      : super(key: key);
 
   @override
-  createState() => _textFormField.createState();
+  State<StatefulWidget> createState() =>
+      _PasswordFieldState(controller, validator, labelText);
+}
+
+class _PasswordFieldState extends State<PasswordField> {
+  final TextEditingController controller;
+  final String Function(String) validator;
+  final String labelText;
+  _PasswordFieldState(this.controller, this.validator, this.labelText);
 
   @override
-  List<DiagnosticsNode> debugDescribeChildren() =>
-      _textFormField.debugDescribeChildren();
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) =>
-      _textFormField.debugFillProperties(properties);
-
-  @override
-  bool get enabled => _textFormField.enabled;
-
-  @override
-  String get initialValue => _textFormField.initialValue;
-
-  @override
-  Key get key => _textFormField.key;
-
-  @override
-  get onSaved => _textFormField.onSaved;
-
-  @override
-  DiagnosticsNode toDiagnosticsNode(
-          {String name, DiagnosticsTreeStyle style}) =>
-      _textFormField.toDiagnosticsNode(name: name, style: style);
-
-  @override
-  String toStringDeep(
-          {String prefixLineOne = '',
-          String prefixOtherLines,
-          DiagnosticLevel minLevel = DiagnosticLevel.debug}) =>
-      _textFormField.toStringDeep(
-          prefixLineOne: prefixLineOne,
-          prefixOtherLines: prefixOtherLines,
-          minLevel: minLevel);
-
-  @override
-  String toStringShallow(
-          {String joiner = ', ',
-          DiagnosticLevel minLevel = DiagnosticLevel.debug}) =>
-      _textFormField.toStringShallow(joiner: joiner, minLevel: minLevel);
-
-  @override
-  String toStringShort() => _textFormField.toStringShort();
-
-  @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) =>
-      _textFormField.toString(minLevel: minLevel);
-
-  @override
-  get validator => _textFormField.validator;
+  Widget build(BuildContext context) {
+    return TextFormField(
+      validator: validator,
+      controller: controller,
+      obscureText: true,
+      decoration: InputDecoration(
+          labelText: labelText,
+          labelStyle: TextStyle(color: Colors.grey)),
+    );
+  }
 }

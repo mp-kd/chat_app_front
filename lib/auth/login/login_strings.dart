@@ -16,4 +16,6 @@ class LoginStrings {
   static final String connectionIssuesText = "Connection issues";
 
   static final String loginCantBeEmpty = "Login can't be empty";
+
+
 }

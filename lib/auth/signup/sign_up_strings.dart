@@ -12,14 +12,13 @@ class SignUpStrings {
   static final String passwordsDifferentText = "Given passwords are different";
 
   static final String successAlertText = "Success";
-  static final String successAlertBtnText = "Ok";
+  static final String okText = "Ok";
 
   static final String failureAlertText = "Failure";
-  static final String failureAlertBtnText = "Ok";
-  static final String failureSignUpText = "Ok";
 
   static final String alreadyMemberText = "Already a member? ";
   static final String loginText = "Log in";
+  static final String signUpText = "Sign up";
 
   static final String failureUsernameAlreadyInUseSignUpText =
       "Username already in use";
@@ -32,5 +31,4 @@ class SignUpStrings {
       "Connection issues";
   static final String failureUnknownReasonSignUpText = "Something went wrong";
 
-  static final String signUpButtonText = "Sign up";
 }

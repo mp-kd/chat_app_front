@@ -31,18 +31,17 @@ class _LoginFormState extends State<LoginForm> {
         key: _formKey,
         child: Column(
           children: <Widget>[
-            createTextFormField(
-                LoginKeys.usernameTextFromField,
-                LoginStrings.usernameTextFormFieldText,
-                false,
-                (value) => null,
-                _usernameController),
-            createTextFormField(
-                LoginKeys.passwordTextFromField,
-                LoginStrings.passwordTextFormFieldText,
-                true,
-                (value) => null,
-                _passwordController),
+            UsernameField(
+              controller: _usernameController,
+              key: Key(LoginKeys.usernameTextFromField),
+              validator: (value) => value.isEmpty ? LoginStrings.loginCantBeEmpty:null,
+            ),
+            PasswordField(
+              controller: _passwordController,
+              key: Key(LoginKeys.passwordTextFromField),
+              validator: (value) => null,
+              labelText: LoginStrings.passwordTextFormFieldText,
+            ),
             MaterialButton(
               key: Key(LoginKeys.submitButton),
               onPressed: _onPressedLoginButton,
@@ -58,24 +57,25 @@ class _LoginFormState extends State<LoginForm> {
     FocusScope.of(context).unfocus();
     if (_formKey.currentState.validate()) {
       final response = await userService.loginUser(User(
-          name: _usernameController.text, password: _passwordController.text));
-      switch (response) {
-        case UserServiceResponse.SUCCESS:
-          Navigator.pushNamed(context, '/welcome_page');
-          break;
-        case UserServiceResponse.WRONG_USERNAME_OR_PASSWORD:
-          showDialogWithBtn(context, LoginStrings.failureText,
-              LoginStrings.invalidUserPasswordText, LoginStrings.okText);
-          break;
-        case UserServiceResponse.CANT_CONNECT_TO_SERVER:
-          showDialogWithBtn(context, LoginStrings.failureText,
-              LoginStrings.connectionIssuesText, LoginStrings.okText);
-          break;
-        default:
-          showDialogWithBtn(context, LoginStrings.failureText,
-              LoginStrings.failureMsgText, LoginStrings.okText);
-          break;
+          name: _usernameController.text, password: _passwordController.text, email: ""));
+      if (response == UserServiceResponse.SUCCESS) {
+        Navigator.pushNamed(context, '/welcome_page');
       }
+      else {
+        showDialogWithBtn(context, LoginStrings.failureText,
+            _resolveMessage(response), LoginStrings.okText);
+      }
+    }
+  }
+
+  _resolveMessage(UserServiceResponse response){
+    switch (response) {
+      case UserServiceResponse.WRONG_USERNAME_OR_PASSWORD:
+        return LoginStrings.invalidUserPasswordText;
+      case UserServiceResponse.CANT_CONNECT_TO_SERVER:
+        return LoginStrings.connectionIssuesText;
+      default:
+        return LoginStrings.failureMsgText;
     }
   }
 }
