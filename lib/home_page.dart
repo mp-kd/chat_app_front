@@ -16,6 +16,26 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
+      body: Center(
+        child: Container(
+          child: ListView(
+            children: <Widget>[
+              MaterialButton(
+                child: Text('Sign up'),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/signup');
+                },
+              ),
+              MaterialButton(
+                child: Text('Login'),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/login');
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

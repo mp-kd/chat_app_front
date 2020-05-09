@@ -1,6 +1,12 @@
+import 'package:chat_app_front/welcome_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+import 'auth/login/login_page.dart';
+import 'auth/signup/sign_up_page.dart';
 import 'home_page.dart';
+
+final storage = FlutterSecureStorage();
 
 void main() {
   runApp(ChatApp());
@@ -15,7 +21,15 @@ class ChatApp extends StatelessWidget {
         primarySwatch: Colors.green,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: HomePage(title: 'Chat App Home Page'),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => HomePage(
+              title: "Chatapp",
+            ),
+        '/signup': (context) => SignUpPage(),
+        '/login': (context) => LoginPage(),
+        '/welcome_page': (context) => WelcomePage()
+      },
     );
   }
 }
