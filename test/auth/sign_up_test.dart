@@ -1,16 +1,12 @@
 import 'package:chat_app_front/auth/signup/sign_up_form.dart';
 import 'package:chat_app_front/auth/signup/sign_up_keys.dart';
 import 'package:chat_app_front/auth/signup/sign_up_strings.dart';
-
 import 'package:chat_app_front/auth/user_service.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
-class MockNavigatorObserver extends Mock implements NavigatorObserver {}
-
-class MockUserService extends Mock implements UserService {}
+import 'auth_mocks.dart';
 
 main() {
   UserService mockUserService;
@@ -32,7 +28,7 @@ main() {
               Column(
                 children: <Widget>[
                   SignUpForm(
-                    userRepository: mockUserService,
+                    userService: mockUserService,
                   )
                 ],
               ),
@@ -51,7 +47,7 @@ main() {
   final repeatPasswordKey = Key(SignUpKeys.repeatedPasswordTextFromField);
   final submitButtonKey = Key(SignUpKeys.submitButton);
 
-  testWidgets("should sign up user and display confirmation alert",
+  testWidgets("should sign up user and display confirmation dialog",
       (WidgetTester tester) async {
     //arrange
     final validUsername = "test1";

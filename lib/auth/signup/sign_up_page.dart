@@ -1,21 +1,22 @@
 import 'package:chat_app_front/auth/signup/sign_up_strings.dart';
 import 'package:chat_app_front/auth/user_service.dart';
 import 'package:chat_app_front/auth/user_service_impl.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import 'sign_up_form.dart';
 
 class SignUpPage extends StatefulWidget {
-  final UserService userRepository = UserServiceImpl();
+  final UserService userService = UserServiceImpl();
 
   @override
-  _SignUpPageState createState() => _SignUpPageState(userRepository);
+  _SignUpPageState createState() => _SignUpPageState(userService);
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  final UserService userRepository;
+  final UserService userService;
 
-  _SignUpPageState(this.userRepository);
+  _SignUpPageState(this.userService);
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +30,7 @@ class _SignUpPageState extends State<SignUpPage> {
             Column(
               children: <Widget>[
                 SignUpForm(
-                  userRepository: userRepository,
+                  userService: userService,
                 ),
                 RichText(
                   text: TextSpan(
@@ -38,8 +39,13 @@ class _SignUpPageState extends State<SignUpPage> {
                           text: SignUpStrings.alreadyMemberText,
                           style: TextStyle(color: Colors.grey, fontSize: 12)),
                       TextSpan(
-                          text: SignUpStrings.loginText,
-                          style: TextStyle(color: Colors.blue, fontSize: 12))
+                        text: SignUpStrings.loginText,
+                        style: TextStyle(color: Colors.blue, fontSize: 12),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = (() {
+                            Navigator.pushNamed(context, '/login');
+                          }),
+                      ),
                     ],
                   ),
                 ),

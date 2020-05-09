@@ -1,38 +1,27 @@
+import 'package:chat_app_front/auth/auth_widgets.dart';
 import 'package:chat_app_front/auth/signup/sign_up_keys.dart';
 import 'package:chat_app_front/auth/signup/sign_up_strings.dart';
 import 'package:chat_app_front/auth/user.dart';
 import 'package:chat_app_front/auth/user_service.dart';
-import 'package:chat_app_front/auth/auth_widgets.dart';
 import 'package:flutter/material.dart';
 
 import 'validators.dart';
 
 class SignUpForm extends StatefulWidget {
-  final UserService userRepository;
+  final UserService userService;
 
-  const SignUpForm({Key key, this.userRepository}) : super(key: key);
+  const SignUpForm({Key key, this.userService}) : super(key: key);
 
   @override
-  _SignUpFormState createState() => _SignUpFormState(userRepository);
+  _SignUpFormState createState() => _SignUpFormState(userService);
 }
 
 class _SignUpFormState extends State<SignUpForm> {
   final _formKey = GlobalKey<FormState>();
-  final _usernameTextField = UsernameField(UsernameValidator.validate, SignUpKeys.usernameTextFromField);
-  final _emailTextField = _createTextFormField(SignUpKeys.emailTextFromField,
-      SignUpStrings.emailTextFormFieldText, false, EmailValidator.validate);
-  final _passwordTextField = _createTextFormField(
-      SignUpKeys.passwordTextFromField,
-      SignUpStrings.passwordTextFormFieldText,
-      true,
-      PasswordValidator.validate);
-  final _repeatedPasswordTextField = _createTextFormField(
-      SignUpKeys.repeatedPasswordTextFromField,
-      SignUpStrings.repeatPasswordTextFormFieldLText,
-      true, (value) {
-    //TODO: cant use static _passwordTextField
-    return null;
-  });
+  var _usernameController = TextEditingController();
+  var _emailController = TextEditingController();
+  var _passwordController = TextEditingController();
+  var _repeatedPasswordController = TextEditingController();
 
   final UserService signUpUser;
 
@@ -51,10 +40,31 @@ class _SignUpFormState extends State<SignUpForm> {
         key: _formKey,
         child: Column(
           children: <Widget>[
-            _usernameTextField,
-            _emailTextField,
-            _passwordTextField,
-            _repeatedPasswordTextField,
+            createTextFormField(
+                SignUpKeys.usernameTextFromField,
+                SignUpStrings.usernameTextFormFieldText,
+                false,
+                UsernameValidator.validate,
+                _usernameController),
+            createTextFormField(
+                SignUpKeys.emailTextFromField,
+                SignUpStrings.emailTextFormFieldText,
+                false,
+                EmailValidator.validate,
+                _emailController),
+            createTextFormField(
+                SignUpKeys.passwordTextFromField,
+                SignUpStrings.passwordTextFormFieldText,
+                true,
+                PasswordValidator.validate,
+                _passwordController),
+            createTextFormField(SignUpKeys.repeatedPasswordTextFromField,
+                SignUpStrings.repeatPasswordTextFormFieldLText, true, (value) {
+              return _passwordController.text !=
+                      _repeatedPasswordController.text
+                  ? SignUpStrings.passwordsDifferentText
+                  : null;
+            }, _repeatedPasswordController),
             Text(SignUpStrings.termsOfServiceText),
             MaterialButton(
               key: Key(SignUpKeys.submitButton),
@@ -67,25 +77,12 @@ class _SignUpFormState extends State<SignUpForm> {
     );
   }
 
-  static TextFormField _createTextFormField(
-      String key, String decorationText, bool obscureText, Function validator) {
-    return TextFormField(
-      key: Key(key),
-      decoration: InputDecoration(
-        labelText: decorationText,
-        labelStyle: TextStyle(color: Colors.grey),
-      ),
-      obscureText: obscureText,
-      validator: validator,
-    );
-  }
-
   void _onPressedSubmitButton() async {
     FocusScope.of(context).unfocus();
     if (_formKey.currentState.validate()) {
-      var username = _usernameTextField.controller.text;
-      var email = _emailTextField.controller.text;
-      var password = _passwordTextField.controller.text;
+      var username = _usernameController.text;
+      var email = _emailController.text;
+      var password = _passwordController.text;
       final response = await signUpUser
           .signUpUser(User(name: username, email: email, password: password));
 
@@ -127,29 +124,7 @@ class _SignUpFormState extends State<SignUpForm> {
           btnText = SignUpStrings.failureAlertBtnText;
           break;
       }
-      _showDialog(context, title, msgText, btnText);
+      showDialogWithBtn(context, title, msgText, btnText);
     }
-  }
-
-  static void _showDialog(
-      BuildContext context, String title, String msg, String btnMsg) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: new Text(title),
-          content: new Text(msg),
-          actions: <Widget>[
-            // usually buttons at the bottom of the dialog
-            new MaterialButton(
-              child: new Text(btnMsg),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
   }
 }

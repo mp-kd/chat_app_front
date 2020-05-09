@@ -2,6 +2,42 @@ import 'package:chat_app_front/auth/signup/sign_up_strings.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+TextFormField createTextFormField(String key, String decorationText,
+    bool obscureText, Function validator, TextEditingController controller) {
+  return TextFormField(
+    controller: controller,
+    key: Key(key),
+    decoration: InputDecoration(
+      labelText: decorationText,
+      labelStyle: TextStyle(color: Colors.grey),
+    ),
+    obscureText: obscureText,
+    validator: validator,
+  );
+}
+
+void showDialogWithBtn(
+    BuildContext context, String title, String msg, String btnMsg) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: new Text(title),
+        content: new Text(msg),
+        actions: <Widget>[
+          // usually buttons at the bottom of the dialog
+          new MaterialButton(
+            child: new Text(btnMsg),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+
 class UsernameField implements TextFormField {
   final TextFormField _textFormField;
 
@@ -83,4 +119,3 @@ class UsernameField implements TextFormField {
   @override
   get validator => _textFormField.validator;
 }
-

@@ -28,7 +28,9 @@ class _HomePageState extends State<HomePage> {
               ),
               MaterialButton(
                 child: Text('Login'),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, '/login');
+                },
               ),
             ],
           ),

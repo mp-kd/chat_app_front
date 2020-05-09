@@ -1,6 +1,8 @@
+import 'package:chat_app_front/welcome_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+import 'auth/login/login_page.dart';
 import 'auth/signup/sign_up_page.dart';
 import 'home_page.dart';
 
@@ -24,7 +26,9 @@ class ChatApp extends StatelessWidget {
         '/': (context) => HomePage(
               title: "Chatapp",
             ),
-        '/signup': (context) => SignUpPage()
+        '/signup': (context) => SignUpPage(),
+        '/login': (context) => LoginPage(),
+        '/welcome_page': (context) => WelcomePage()
       },
     );
   }
