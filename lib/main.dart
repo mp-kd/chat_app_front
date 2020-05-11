@@ -1,21 +1,37 @@
+import 'package:chat_app_front/global_localization.dart';
+import 'package:chat_app_front/landing_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:provider/provider.dart';
 
-void main() {
+import 'locale_model.dart';
+
+main() {
   runApp(ChatApp());
 }
 
 class ChatApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Chat App',
-      theme: ThemeData(
-        primarySwatch: Colors.green,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text("lol"),
+    return ChangeNotifierProvider(
+      create: (_) => LocaleModel(),
+      child: Consumer<LocaleModel>(
+        builder: (context, provider, child) => MaterialApp(
+          title: "ChatApp",
+          locale: Provider.of<LocaleModel>(context).locale,
+          supportedLocales: [
+            Locale('en', 'US'),
+            Locale('pl', ''),
+          ],
+          localizationsDelegates: [
+            GlobalLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+          ],
+          initialRoute: '/',
+          routes: {
+            '/': (context) => LandingPage(),
+          },
         ),
       ),
     );
