@@ -18,12 +18,16 @@ class LandingPage extends StatelessWidget {
         MaterialButton(
           child: Text("Polski"),
           onPressed: () => Provider.of<LocaleModel>(context, listen: false)
-              .changelocale(Locale('pl')),
+              .changeLocale(Locale('pl')),
         ),
         MaterialButton(
           child: Text('English'),
           onPressed: () => Provider.of<LocaleModel>(context, listen: false)
-              .changelocale(Locale('en')),
+              .changeLocale(Locale('en')),
+        ),
+        MaterialButton(
+          child: Text('Go to auth'),
+          onPressed: () => Navigator.of(context).pushNamed('/auth'),
         )
       ]),
     );

@@ -1,3 +1,4 @@
+import 'package:chat_app_front/auth/widgets/auth_page.dart';
 import 'package:chat_app_front/global_localization.dart';
 import 'package:chat_app_front/landing_page.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,7 @@ class ChatApp extends StatelessWidget {
           title: "ChatApp",
           locale: Provider.of<LocaleModel>(context).locale,
           supportedLocales: [
-            Locale('en', 'US'),
+            Locale('en', ''),
             Locale('pl', ''),
           ],
           localizationsDelegates: [
@@ -31,6 +32,7 @@ class ChatApp extends StatelessWidget {
           initialRoute: '/',
           routes: {
             '/': (context) => LandingPage(),
+            '/auth': (context) => AuthPage(),
           },
         ),
       ),

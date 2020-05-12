@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 class LocaleModel with ChangeNotifier {
   Locale locale = Locale('en');
 
-  Locale get getlocale => locale;
+  Locale get getLocale => locale;
 
-  void changelocale(Locale l) {
+  void changeLocale(Locale l) {
     locale = l;
     notifyListeners();
   }

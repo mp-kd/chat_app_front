@@ -1,4 +1,13 @@
 {
   "title": "Cześć!",
-  "Message" : "To jest polzga"
+  "Message": "To jest polzga",
+  "loginButtonText": "Zaloguj",
+  "signUpButtonText": "Dołącz",
+  "username": "Nazwa użytkownika",
+  "password": "Hasło",
+  "repeatPassword": "Powtórz hasło",
+  "email": "E-mail",
+  "termsOfService": "Klikając Dołącz wyrażasz zgodę na Warunki Korzystania z serwisu ChatApp",
+  "forgotPassword": "Zapomniałeś/aś hasła?",
+  "resetPassword": "Zresetuj hasło"
 }
