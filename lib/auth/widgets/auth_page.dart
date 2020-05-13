@@ -7,6 +7,11 @@ import 'auth_buttons.dart';
 import 'auth_form.dart';
 
 class AuthPage extends StatelessWidget {
+  final List<Color> gradientColors = [
+    Color.fromARGB(255, 44, 31, 77),
+    Color.fromARGB(200, 66, 0, 43)
+  ];
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -14,28 +19,28 @@ class AuthPage extends StatelessWidget {
       child: Consumer<AuthFormType>(
         builder: (context, type, child) => Scaffold(
           body: Container(
+            height: double.infinity,
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [
-                  Color.fromARGB(255, 44, 31, 77),
-                  Color.fromARGB(200, 66, 0, 43)
-                ],
+                colors: gradientColors,
                 stops: [0.4, 1.0],
               ),
             ),
-            child: Column(
-              children: <Widget>[
-                Container(
-                  child: buttonsSection(context),
-                  margin: EdgeInsets.only(top: 50),
-                ),
-                Container(
-                  child: AuthForm(type.authType),
-                  margin: EdgeInsets.symmetric(horizontal: 40),
-                ),
-              ],
+            child: SingleChildScrollView(
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    child: buttonsSection(context),
+                    margin: EdgeInsets.only(top: 50),
+                  ),
+                  Container(
+                    child: AuthForm(type.authType),
+                    margin: EdgeInsets.symmetric(horizontal: 40),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

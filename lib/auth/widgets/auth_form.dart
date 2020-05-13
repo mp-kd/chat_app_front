@@ -1,8 +1,7 @@
 import 'package:chat_app_front/auth/widgets/auth_buttons.dart';
 import 'package:chat_app_front/auth/widgets/auth_label_keys.dart';
+import 'package:chat_app_front/auth/widgets/validators.dart';
 import 'package:chat_app_front/global_localization.dart';
-import 'package:email_validator/email_validator.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -20,7 +19,7 @@ class AuthFormType with ChangeNotifier {
   }
 }
 
-abstract class AuthForm extends StatelessWidget {
+abstract class AuthForm extends StatefulWidget {
   AuthForm._();
 
   factory AuthForm(AuthType type) {
@@ -39,6 +38,11 @@ abstract class AuthForm extends StatelessWidget {
 class ForgotPasswordForm extends AuthForm {
   ForgotPasswordForm() : super._();
 
+  @override
+  _ForgotPasswordFormState createState() => _ForgotPasswordFormState();
+}
+
+class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
   final TextEditingController usernameController = TextEditingController();
 
   @override
@@ -62,21 +66,32 @@ class ForgotPasswordForm extends AuthForm {
     );
   }
 
-  //TODO: handle reset password request
   void _resetPasswordButtonAction() {}
 }
 
 class SignUpForm extends AuthForm {
   SignUpForm() : super._();
+
+  @override
+  _SignUpFormState createState() => _SignUpFormState();
+}
+
+class _SignUpFormState extends State<SignUpForm> {
   final TextEditingController emailController = TextEditingController();
+
   final TextEditingController usernameController = TextEditingController();
+
   final TextEditingController passwordController = TextEditingController();
+
   final TextEditingController repeatPasswordController =
       TextEditingController();
+
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return Form(
+      key: _formKey,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
@@ -86,24 +101,42 @@ class SignUpForm extends AuthForm {
                 context,
                 GlobalLocalizations.of(context).translate(AuthLabelKeys.email),
                 emailController,
-                (value)=>EmailValidator.validate(value)?null:"Such email doesn't exist"),
+                Validator(ValidatorType.EMAIL, context).validate),
           ),
           Container(
             margin: EdgeInsets.symmetric(vertical: 10),
             child: _createFormField(
                 context,
-                GlobalLocalizations.of(context).translate(AuthLabelKeys.username),
+                GlobalLocalizations.of(context)
+                    .translate(AuthLabelKeys.username),
                 usernameController,
-                (_) => null),
+                Validator(ValidatorType.USERNAME, context).validate),
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 5),
+            child: Text(GlobalLocalizations.of(context).translate(AuthLabelKeys.usernamePolicy),
+            style: TextStyle(
+              color: Theme.of(context).accentTextTheme.caption.color,
+              fontSize: 8
+            ),),
           ),
           Container(
             margin: EdgeInsets.symmetric(vertical: 10),
             child: _createFormField(
                 context,
-                GlobalLocalizations.of(context).translate(AuthLabelKeys.password),
+                GlobalLocalizations.of(context)
+                    .translate(AuthLabelKeys.password),
                 passwordController,
-                (_) => null,
+                Validator(ValidatorType.PASSWORD, context).validate,
                 isPassword: true),
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 5),
+            child: Text(GlobalLocalizations.of(context).translate(AuthLabelKeys.passwordPolicy),
+              style: TextStyle(
+                  color: Theme.of(context).accentTextTheme.caption.color,
+                  fontSize: 8
+              ),),
           ),
           Container(
             margin: EdgeInsets.symmetric(vertical: 10),
@@ -112,14 +145,19 @@ class SignUpForm extends AuthForm {
                 GlobalLocalizations.of(context)
                     .translate(AuthLabelKeys.repeatPassword),
                 repeatPasswordController,
-                (_) => null,
+                (value) => value != passwordController.text
+                    ? GlobalLocalizations.of(context)
+                        .translate(AuthLabelKeys.passwordsDifferent)
+                    : null,
                 isPassword: true),
           ),
           Container(
             margin: EdgeInsets.symmetric(vertical: 10),
-            child: Text(GlobalLocalizations.of(context)
-                .translate(AuthLabelKeys.termsOfService),
-            style: Theme.of(context).primaryTextTheme.caption,),
+            child: Text(
+              GlobalLocalizations.of(context)
+                  .translate(AuthLabelKeys.termsOfService),
+              style: Theme.of(context).primaryTextTheme.caption,
+            ),
           ),
           AuthButton(
               AuthButtonType.SUBMIT,
@@ -132,21 +170,31 @@ class SignUpForm extends AuthForm {
     );
   }
 
-  //TODO: handle sign up request
-  void _signUpButtonAction() {}
+  void _signUpButtonAction() {
+    if(_formKey.currentState.validate()){
+
+    }
+  }
 }
 
 class LoginForm extends AuthForm {
   LoginForm() : super._();
 
-  final TextEditingController usernameController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  @override
+  _LoginFormState createState() => _LoginFormState();
+}
 
+class _LoginFormState extends State<LoginForm> {
+  final TextEditingController usernameController = TextEditingController();
+
+  final TextEditingController passwordController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
         Form(
+          key: _formKey,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
@@ -157,7 +205,7 @@ class LoginForm extends AuthForm {
                     GlobalLocalizations.of(context)
                         .translate(AuthLabelKeys.username),
                     usernameController,
-                    (_) => null),
+                    Validator(ValidatorType.NOT_EMPTY, context).validate),
               ),
               Container(
                 margin: EdgeInsets.symmetric(vertical: 15),
@@ -166,7 +214,7 @@ class LoginForm extends AuthForm {
                     GlobalLocalizations.of(context)
                         .translate(AuthLabelKeys.password),
                     passwordController,
-                    (_) => null,
+                    Validator(ValidatorType.NOT_EMPTY, context).validate,
                     isPassword: true),
               ),
               Container(
@@ -193,8 +241,11 @@ class LoginForm extends AuthForm {
     );
   }
 
-  //TODO: handle login request
-  void _loginButtonAction() {}
+  void _loginButtonAction() {
+    if(_formKey.currentState.validate()){
+
+    }
+  }
 }
 
 TextFormField _createFormField(BuildContext context, String label,
@@ -203,13 +254,14 @@ TextFormField _createFormField(BuildContext context, String label,
   return TextFormField(
       controller: controller,
       validator: validator,
-      autovalidate: true,
+      // autovalidate validates immediately on field load, not after first change
+      autovalidate: false,
       obscureText: isPassword,
       style: Theme.of(context).primaryTextTheme.button,
       decoration: InputDecoration(
         enabledBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: Theme.of(context).accentTextTheme.caption.color)
-        ),
+            borderSide: BorderSide(
+                color: Theme.of(context).accentTextTheme.caption.color)),
         labelText: label,
         labelStyle: Theme.of(context).accentTextTheme.button,
       ));

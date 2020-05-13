@@ -9,5 +9,11 @@
   "email": "E-mail",
   "termsOfService": "Klikając Dołącz wyrażasz zgodę na Warunki Korzystania z serwisu ChatApp",
   "forgotPassword": "Zapomniałeś/aś hasła?",
-  "resetPassword": "Zresetuj hasło"
+  "resetPassword": "Zresetuj hasło",
+  "fieldCantBeEmpty": "Pole nie może być puste",
+  "emailPolicy": "Email niepoprawny",
+  "invalidFormat": "Niepoprawny format",
+  "usernamePolicy": "Nazwa użytkownika powinna zawierać przynajmniej 6 znaków alfanumerycznych.",
+  "passwordPolicy": "Hasło powinno zawierać przynajmniej 8 znaków alfanumerycznych.",
+  "passwordsDifferent": "Hasła się różnią"
 }
