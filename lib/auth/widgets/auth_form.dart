@@ -1,4 +1,8 @@
+import 'package:chat_app_front/auth/widgets/auth_buttons.dart';
+import 'package:chat_app_front/auth/widgets/auth_label_keys.dart';
 import 'package:chat_app_front/global_localization.dart';
+import 'package:email_validator/email_validator.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -43,18 +47,23 @@ class ForgotPasswordForm extends AuthForm {
       child: Column(
         children: <Widget>[
           _createFormField(
-              GlobalLocalizations.of(context).translate('username'),
+              context,
+              GlobalLocalizations.of(context).translate(AuthLabelKeys.username),
               usernameController,
               (_) => null),
-          MaterialButton(
-            child: Text(
-                GlobalLocalizations.of(context).translate('resetPassword')),
-            onPressed: () => "reseting password",
-          ),
+          AuthButton(
+              AuthButtonType.SUBMIT,
+              GlobalLocalizations.of(context)
+                  .translate(AuthLabelKeys.resetPassword)
+                  .toUpperCase(),
+              _resetPasswordButtonAction),
         ],
       ),
     );
   }
+
+  //TODO: handle reset password request
+  void _resetPasswordButtonAction() {}
 }
 
 class SignUpForm extends AuthForm {
@@ -69,31 +78,62 @@ class SignUpForm extends AuthForm {
   Widget build(BuildContext context) {
     return Form(
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
-          _createFormField(GlobalLocalizations.of(context).translate('email'),
-              emailController, (_) => null),
-          _createFormField(
-              GlobalLocalizations.of(context).translate('username'),
-              usernameController,
-              (_) => null),
-          _createFormField(
-              GlobalLocalizations.of(context).translate('password'),
-              passwordController,
-              (_) => null),
-          _createFormField(
-              GlobalLocalizations.of(context).translate('repeatPassword'),
-              repeatPasswordController,
-              (_) => null),
-          Text(GlobalLocalizations.of(context).translate('termsOfService')),
-          MaterialButton(
-            child: Text(
-                GlobalLocalizations.of(context).translate('signUpButtonText')),
-            onPressed: () => print('sign up'),
-          )
+          Container(
+            margin: EdgeInsets.symmetric(vertical: 10),
+            child: _createFormField(
+                context,
+                GlobalLocalizations.of(context).translate(AuthLabelKeys.email),
+                emailController,
+                (value)=>EmailValidator.validate(value)?null:"Such email doesn't exist"),
+          ),
+          Container(
+            margin: EdgeInsets.symmetric(vertical: 10),
+            child: _createFormField(
+                context,
+                GlobalLocalizations.of(context).translate(AuthLabelKeys.username),
+                usernameController,
+                (_) => null),
+          ),
+          Container(
+            margin: EdgeInsets.symmetric(vertical: 10),
+            child: _createFormField(
+                context,
+                GlobalLocalizations.of(context).translate(AuthLabelKeys.password),
+                passwordController,
+                (_) => null,
+                isPassword: true),
+          ),
+          Container(
+            margin: EdgeInsets.symmetric(vertical: 10),
+            child: _createFormField(
+                context,
+                GlobalLocalizations.of(context)
+                    .translate(AuthLabelKeys.repeatPassword),
+                repeatPasswordController,
+                (_) => null,
+                isPassword: true),
+          ),
+          Container(
+            margin: EdgeInsets.symmetric(vertical: 10),
+            child: Text(GlobalLocalizations.of(context)
+                .translate(AuthLabelKeys.termsOfService),
+            style: Theme.of(context).primaryTextTheme.caption,),
+          ),
+          AuthButton(
+              AuthButtonType.SUBMIT,
+              GlobalLocalizations.of(context)
+                  .translate(AuthLabelKeys.signUp)
+                  .toUpperCase(),
+              _signUpButtonAction),
         ],
       ),
     );
   }
+
+  //TODO: handle sign up request
+  void _signUpButtonAction() {}
 }
 
 class LoginForm extends AuthForm {
@@ -108,42 +148,69 @@ class LoginForm extends AuthForm {
       children: <Widget>[
         Form(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              _createFormField(
-                  GlobalLocalizations.of(context).translate('username'),
-                  usernameController,
-                  (_) => null),
-              _createFormField(
-                  GlobalLocalizations.of(context).translate('password'),
-                  passwordController,
-                  (_) => null),
-              MaterialButton(
-                child: Text(GlobalLocalizations.of(context)
-                    .translate('loginButtonText')),
-                onPressed: () => print('login'),
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 15),
+                child: _createFormField(
+                    context,
+                    GlobalLocalizations.of(context)
+                        .translate(AuthLabelKeys.username),
+                    usernameController,
+                    (_) => null),
               ),
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 15),
+                child: _createFormField(
+                    context,
+                    GlobalLocalizations.of(context)
+                        .translate(AuthLabelKeys.password),
+                    passwordController,
+                    (_) => null,
+                    isPassword: true),
+              ),
+              Container(
+                  margin: EdgeInsets.symmetric(vertical: 14),
+                  child: AuthButton(
+                      AuthButtonType.SUBMIT,
+                      GlobalLocalizations.of(context)
+                          .translate(AuthLabelKeys.login)
+                          .toUpperCase(),
+                      _loginButtonAction)),
             ],
           ),
         ),
         MaterialButton(
-          child:
-              Text(GlobalLocalizations.of(context).translate('forgotPassword')),
+          child: Text(
+            GlobalLocalizations.of(context)
+                .translate(AuthLabelKeys.forgotPassword),
+            style: Theme.of(context).accentTextTheme.button,
+          ),
           onPressed: () => Provider.of<AuthFormType>(context, listen: false)
               .changeAuthType(AuthType.FORGOT_PASSWORD),
         ),
       ],
     );
   }
+
+  //TODO: handle login request
+  void _loginButtonAction() {}
 }
 
-TextFormField _createFormField(String label, TextEditingController controller,
-    String Function(String) validator,
+TextFormField _createFormField(BuildContext context, String label,
+    TextEditingController controller, String Function(String) validator,
     {bool isPassword = false}) {
   return TextFormField(
       controller: controller,
       validator: validator,
+      autovalidate: true,
+      obscureText: isPassword,
+      style: Theme.of(context).primaryTextTheme.button,
       decoration: InputDecoration(
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: Theme.of(context).accentTextTheme.caption.color)
+        ),
         labelText: label,
-        labelStyle: TextStyle(color: Colors.grey),
+        labelStyle: Theme.of(context).accentTextTheme.button,
       ));
 }

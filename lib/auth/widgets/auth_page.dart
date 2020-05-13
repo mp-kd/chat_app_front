@@ -1,7 +1,9 @@
+import 'package:chat_app_front/auth/widgets/auth_label_keys.dart';
 import 'package:chat_app_front/global_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'auth_buttons.dart';
 import 'auth_form.dart';
 
 class AuthPage extends StatelessWidget {
@@ -10,15 +12,33 @@ class AuthPage extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (_) => AuthFormType(),
       child: Consumer<AuthFormType>(
-        builder: (context, type, child) =>
-            Scaffold(
-              body: Column(
-                children: <Widget>[
-                  buttonsSection(context),
-                  AuthForm(type.authType),
+        builder: (context, type, child) => Scaffold(
+          body: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Color.fromARGB(255, 44, 31, 77),
+                  Color.fromARGB(200, 66, 0, 43)
                 ],
+                stops: [0.4, 1.0],
               ),
             ),
+            child: Column(
+              children: <Widget>[
+                Container(
+                  child: buttonsSection(context),
+                  margin: EdgeInsets.only(top: 50),
+                ),
+                Container(
+                  child: AuthForm(type.authType),
+                  margin: EdgeInsets.symmetric(horizontal: 40),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -28,27 +48,26 @@ class AuthPage extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
-          _buildAuthButton(AuthType.LOGIN,
-              GlobalLocalizations.of(context).translate('loginButtonText'), context),
-          _buildAuthButton(AuthType.SIGN_UP,
-              GlobalLocalizations.of(context).translate('signUpButtonText'), context),
+          AuthButton(
+            AuthButtonType.UNDERLINED_ON_SELECT,
+            GlobalLocalizations.of(context)
+                .translate(AuthLabelKeys.login)
+                .toUpperCase(),
+            () => Provider.of<AuthFormType>(context, listen: false)
+                .changeAuthType(AuthType.LOGIN),
+            authType: AuthType.LOGIN,
+          ),
+          AuthButton(
+            AuthButtonType.UNDERLINED_ON_SELECT,
+            GlobalLocalizations.of(context)
+                .translate(AuthLabelKeys.signUp)
+                .toUpperCase(),
+            () => Provider.of<AuthFormType>(context, listen: false)
+                .changeAuthType(AuthType.SIGN_UP),
+            authType: AuthType.SIGN_UP,
+          ),
         ],
       ),
-    );
-  }
-
-  Widget _buildAuthButton(AuthType type, String label, BuildContext context) {
-    return MaterialButton(
-      child: Text(label),
-      onPressed: () {
-        if (type == AuthType.LOGIN) {
-          Provider.of<AuthFormType>(context, listen: false).changeAuthType(AuthType.LOGIN);
-        }else if (type == AuthType.SIGN_UP){
-          Provider.of<AuthFormType>(context, listen: false)
-              .changeAuthType(AuthType.SIGN_UP);
-        }
-      },
-
     );
   }
 }
