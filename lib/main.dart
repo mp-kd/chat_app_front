@@ -5,17 +5,38 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 
+import 'auth/infrastructure/user_facade_impl.dart';
+import 'auth/user.dart';
+import 'auth/user_service.dart';
+import 'auth/widgets/auth_form.dart';
+import 'auth/widgets/message_frame.dart';
+import 'dashboard_page.dart';
 import 'locale_model.dart';
 
 main() {
-  runApp(ChatApp());
+  UserFacade _userFacade =
+      UserFacadeImpl("https://mp-kd-chatapp.herokuapp.com");
+  runApp(ChatApp(UserServiceImpl(_userFacade)));
 }
 
 class ChatApp extends StatelessWidget {
+  final UserService _userService;
+
+  const ChatApp(this._userService) : super();
+
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => LocaleModel(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<AuthFormType>(create: (_) => AuthFormType()),
+        ChangeNotifierProvider<UserServiceModel>(
+          create: (_) => UserServiceModel(_userService),
+        ),
+        ChangeNotifierProvider<MessageFrameModel>(
+          create: (_) => MessageFrameModel(),
+        ),
+        ChangeNotifierProvider<LocaleModel>(create: (_) => LocaleModel())
+      ],
       child: Consumer<LocaleModel>(
         builder: (context, provider, child) => MaterialApp(
           title: "ChatApp",
@@ -51,6 +72,7 @@ class ChatApp extends StatelessWidget {
           routes: {
             '/': (context) => LandingPage(),
             '/auth': (context) => AuthPage(),
+            '/dashboard': (context) => DashboardPage(),
           },
         ),
       ),

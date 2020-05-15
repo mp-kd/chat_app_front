@@ -1,4 +1,5 @@
 {
+  "": "",
   "title": "Cześć!",
   "Message": "To jest polzga",
   "loginButtonText": "Zaloguj",
@@ -14,6 +15,11 @@
   "emailPolicy": "Email niepoprawny",
   "invalidFormat": "Niepoprawny format",
   "usernamePolicy": "Nazwa użytkownika powinna zawierać przynajmniej 6 znaków alfanumerycznych.",
-  "passwordPolicy": "Hasło powinno zawierać przynajmniej 8 znaków alfanumerycznych.",
-  "passwordsDifferent": "Hasła się różnią"
+  "passwordPolicy": "Hasło powinno zawierać przynajmniej 8 znaków alfanumerycznych lub znaków specjalnych #$%&'()*+,-./:;<=>?@[\\]^_`{|}~",
+  "passwordsDifferent": "Hasła się różnią",
+  "userExists": "Nazwa użytkownika jest zajęta",
+  "invalidFieldData": "Niepoprawny format nazwy użytkownika/email/hasła.",
+  "cantConnect": "Nie udało się połączyć z serwerem.",
+  "invalidCredentials": "Niepoprawna nazwa użytkownika lub hasło",
+  "userCreatedSuccessfully": "Konto założone. Teraz możesz się zalogować."
 }

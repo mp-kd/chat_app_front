@@ -1,4 +1,4 @@
-import 'package:chat_app_front/auth/widgets/auth_label_keys.dart';
+import 'package:chat_app_front/auth/auth_label_keys.dart';
 import 'package:chat_app_front/global_localization.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';

@@ -1,4 +1,5 @@
 {
+  "": "",
   "title": "Hello",
   "Message": "This is english",
   "loginButtonText": "Login",
@@ -15,5 +16,10 @@
   "invalidFormat": "Invalid format",
   "usernamePolicy": "Username should have at least 6 characters and contain only alphanumeric characters.",
   "passwordPolicy": "Password should have at least 8 and contain alphanumeric characters also special characters #$%&'()*+,-./:;<=>?@[\\]^_`{|}~.",
-  "passwordsDifferent": "Passwords are different"
+  "passwordsDifferent": "Passwords are different",
+  "userExists": "Username already exists",
+  "invalidFieldData": "Invalid username/email/password format.",
+  "cantConnect": "Failed to connect with server.",
+  "invalidCredentials": "Invalid username/password",
+  "userCreatedSuccessfully": "User created successfully, now you can Log In"
 }

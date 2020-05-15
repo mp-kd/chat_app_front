@@ -27,7 +27,7 @@ class LandingPage extends StatelessWidget {
         ),
         MaterialButton(
           child: Text('Go to auth'),
-          onPressed: () => Navigator.of(context).pushNamed('/auth'),
+          onPressed: () => Navigator.of(context).pushReplacementNamed('/auth'),
         )
       ]),
     );

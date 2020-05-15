@@ -1,6 +1,8 @@
+import 'package:chat_app_front/auth/user.dart';
+import 'package:chat_app_front/auth/user_service.dart';
 import 'package:chat_app_front/auth/widgets/auth_buttons.dart';
-import 'package:chat_app_front/auth/widgets/auth_label_keys.dart';
-import 'package:chat_app_front/auth/widgets/validators.dart';
+import 'package:chat_app_front/auth/auth_label_keys.dart';
+import 'package:chat_app_front/auth/validators.dart';
 import 'package:chat_app_front/global_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -60,13 +62,13 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
               GlobalLocalizations.of(context)
                   .translate(AuthLabelKeys.resetPassword)
                   .toUpperCase(),
-              _resetPasswordButtonAction),
+              _onSubmit),
         ],
       ),
     );
   }
 
-  void _resetPasswordButtonAction() {}
+  void _onSubmit() {}
 }
 
 class SignUpForm extends AuthForm {
@@ -88,8 +90,11 @@ class _SignUpFormState extends State<SignUpForm> {
 
   final _formKey = GlobalKey<FormState>();
 
+  UserService _userService;
+
   @override
   Widget build(BuildContext context) {
+    _userService = Provider.of<UserServiceModel>(context).userService;
     return Form(
       key: _formKey,
       child: Column(
@@ -114,11 +119,13 @@ class _SignUpFormState extends State<SignUpForm> {
           ),
           Container(
             margin: EdgeInsets.only(top: 5),
-            child: Text(GlobalLocalizations.of(context).translate(AuthLabelKeys.usernamePolicy),
-            style: TextStyle(
-              color: Theme.of(context).accentTextTheme.caption.color,
-              fontSize: 8
-            ),),
+            child: Text(
+              GlobalLocalizations.of(context)
+                  .translate(AuthLabelKeys.usernamePolicy),
+              style: TextStyle(
+                  color: Theme.of(context).accentTextTheme.caption.color,
+                  fontSize: 8),
+            ),
           ),
           Container(
             margin: EdgeInsets.symmetric(vertical: 10),
@@ -132,11 +139,13 @@ class _SignUpFormState extends State<SignUpForm> {
           ),
           Container(
             margin: EdgeInsets.only(top: 5),
-            child: Text(GlobalLocalizations.of(context).translate(AuthLabelKeys.passwordPolicy),
+            child: Text(
+              GlobalLocalizations.of(context)
+                  .translate(AuthLabelKeys.passwordPolicy),
               style: TextStyle(
                   color: Theme.of(context).accentTextTheme.caption.color,
-                  fontSize: 8
-              ),),
+                  fontSize: 8),
+            ),
           ),
           Container(
             margin: EdgeInsets.symmetric(vertical: 10),
@@ -159,20 +168,29 @@ class _SignUpFormState extends State<SignUpForm> {
               style: Theme.of(context).primaryTextTheme.caption,
             ),
           ),
-          AuthButton(
-              AuthButtonType.SUBMIT,
-              GlobalLocalizations.of(context)
-                  .translate(AuthLabelKeys.signUp)
-                  .toUpperCase(),
-              _signUpButtonAction),
+          Consumer<UserServiceModel>(
+            builder:
+                (BuildContext context, UserServiceModel value, Widget child) {
+              return AuthButton(
+                  AuthButtonType.SUBMIT,
+                  GlobalLocalizations.of(context)
+                      .translate(AuthLabelKeys.signUp)
+                      .toUpperCase(),
+                  () => _onSubmit(context));
+            },
+          ),
         ],
       ),
     );
   }
 
-  void _signUpButtonAction() {
-    if(_formKey.currentState.validate()){
-
+  void _onSubmit(BuildContext context) async {
+    FocusScope.of(context).unfocus();
+    if (_formKey.currentState.validate()) {
+      await _userService.signUp(
+          User(usernameController.text, emailController.text,
+              passwordController.text),
+          context);
     }
   }
 }
@@ -189,8 +207,12 @@ class _LoginFormState extends State<LoginForm> {
 
   final TextEditingController passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+
+  UserService _userService;
+
   @override
   Widget build(BuildContext context) {
+    _userService = Provider.of<UserServiceModel>(context).userService;
     return Column(
       children: <Widget>[
         Form(
@@ -224,7 +246,7 @@ class _LoginFormState extends State<LoginForm> {
                       GlobalLocalizations.of(context)
                           .translate(AuthLabelKeys.login)
                           .toUpperCase(),
-                      _loginButtonAction)),
+                      () => _loginButtonAction(context))),
             ],
           ),
         ),
@@ -241,9 +263,11 @@ class _LoginFormState extends State<LoginForm> {
     );
   }
 
-  void _loginButtonAction() {
-    if(_formKey.currentState.validate()){
-
+  void _loginButtonAction(BuildContext context) async {
+    FocusScope.of(context).unfocus();
+    if (_formKey.currentState.validate()) {
+      await _userService.logIn(
+          usernameController.text, passwordController.text, context);
     }
   }
 }
