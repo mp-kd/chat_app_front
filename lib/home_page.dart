@@ -1,3 +1,5 @@
+import 'package:chat_app_front/theme/theme_model.dart';
+import 'package:chat_app_front/theme/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -23,12 +25,27 @@ class _HomePageState extends State<HomePage> {
       body: Column(
         children: <Widget>[
           MaterialButton(
-            child: Text('Polski'),
-            onPressed: ()=>Provider.of<LocaleModel>(context, listen: false).changeLocale(Locale('pl')),
+            child: Text(
+              'Polski',
+              style: TextStyle(color: Theme.of(context).accentColor),
+            ),
+            onPressed: () {
+              Provider.of<LocaleModel>(context, listen: false)
+                  .changeLocale(Locale('pl'));
+              Provider.of<ThemeModel>(context, listen: false).changeTheme(
+                ChatAppThemes.defaultTheme.copyWith(accentColor: Colors.blue),
+              );
+            },
           ),
           MaterialButton(
             child: Text('English'),
-            onPressed: ()=>Provider.of<LocaleModel>(context, listen: false).changeLocale(Locale('en')),
+            onPressed: () {
+              Provider.of<LocaleModel>(context, listen: false)
+                  .changeLocale(Locale('en'));
+              Provider.of<ThemeModel>(context, listen: false).changeTheme(
+                ChatAppThemes.defaultTheme,
+              );
+            },
           ),
         ],
       ),

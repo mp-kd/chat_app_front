@@ -1,4 +1,6 @@
 import 'package:chat_app_front/localization/global_localization.dart';
+import 'package:chat_app_front/theme/theme_model.dart';
+import 'package:chat_app_front/theme/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
@@ -17,12 +19,15 @@ class ChatApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider<LocaleModel>(
           create: (_) => LocaleModel(),
+        ),
+        ChangeNotifierProvider<ThemeModel>(
+          create: (_) => ThemeModel(ChatAppThemes.defaultTheme),
         )
       ],
-      child: Consumer<LocaleModel>(
-        builder: (context, localeModel, child) => MaterialApp(
+      child: Consumer2<LocaleModel, ThemeModel>(
+        builder: (context, localeModel, themeModel, child) => MaterialApp(
           title: "ChatApp",
-          locale: Provider.of<LocaleModel>(context).locale,
+          locale: Provider.of<LocaleModel>(context).getLocale,
           supportedLocales: [
             Locale('en', ''),
             Locale('pl', ''),
@@ -32,10 +37,7 @@ class ChatApp extends StatelessWidget {
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
           ],
-          theme: ThemeData(
-            primarySwatch: Colors.green,
-            visualDensity: VisualDensity.adaptivePlatformDensity,
-          ),
+          theme: Provider.of<ThemeModel>(context).getTheme,
           home: HomePage(title: "Title"),
         ),
       ),
